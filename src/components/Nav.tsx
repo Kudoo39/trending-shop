@@ -36,10 +36,10 @@ const MyComponent = () => {
 
       <Box sx={{ display: 'flex' }}>
         <Tooltip title="Carts">
-          <ShoppingCartIcon sx={{ cursor: 'pointer', marginRight: '10px' }} />
+          <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer' }} />
         </Tooltip>
         <Tooltip title="Profiles">
-          <PersonOutlineIcon sx={{ cursor: 'pointer' }} />
+          <PersonOutlineIcon sx={{ fontSize: '30px', cursor: 'pointer', margin: '0 10px' }} />
         </Tooltip>
       </Box>
     </Box>
