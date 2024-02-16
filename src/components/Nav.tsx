@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Box from '@mui/material/Box'
@@ -8,6 +8,7 @@ import SvgIcon from '@mui/material/SvgIcon'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import Link from '@mui/material/Link'
 import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 
 const Nav = () => {
@@ -45,7 +46,7 @@ const Nav = () => {
         }}
       >
         <SvgIcon component={ShopIcon} inheritViewBox sx={{ cursor: 'pointer', fontSize: '32px', margin: '0 10px' }} />
-        <Link to="/" style={{ textDecoration: 'none' }}>
+        <Link component={RouterLink} to="/" style={{ textDecoration: 'none' }}>
           <Box
             sx={{
               'cursor': 'pointer',
@@ -57,7 +58,7 @@ const Nav = () => {
             Home
           </Box>
         </Link>
-        <Link to="/products" style={{ textDecoration: 'none' }}>
+        <Link component={RouterLink} to="/products" style={{ textDecoration: 'none' }}>
           <Box
             sx={{
               'cursor': 'pointer',

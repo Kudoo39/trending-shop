@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Link as RouterLink } from 'react-router-dom'
 
 import DiamondIcon from '@mui/icons-material/Diamond'
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
@@ -7,17 +8,20 @@ import ManIcon from '@mui/icons-material/Man'
 import SubjectIcon from '@mui/icons-material/Subject'
 import WomanIcon from '@mui/icons-material/Woman'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardMedia from '@mui/material/CardMedia'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
-import Card from '@mui/material/Card'
-import CardMedia from '@mui/material/CardMedia'
+import Link from '@mui/material/Link'
+import { Category } from '../misc/type'
 import { fetchProductsAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
-import { Category } from '../misc/type'
 
 const Product = () => {
   const dispatch = useAppDispatch()
@@ -103,6 +107,12 @@ const Product = () => {
               image={product.image}
               sx={{ maxWidth: '100%', height: 'auto', display: 'block' }}
             />
+            <CardActions>
+              <Link component={RouterLink} to={`/products/${product.id}`}>
+                <Button size="small">More details</Button>
+              </Link>
+              <Button size="small">Add to cart</Button>
+            </CardActions>
           </Card>
         ))}
       </Box>
