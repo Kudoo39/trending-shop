@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { Product } from '../../misc/type'
+import { ProductType } from '../../misc/type'
 
 const url = 'https://fakestoreapi.com/products'
 
 type InitialState = {
-  products: Product[]
+  products: ProductType[]
   loading: boolean
   error?: string
 }
@@ -17,7 +17,7 @@ const initialState: InitialState = {
 
 export const fetchProductsAsync = createAsyncThunk('fetchProductsAsync', async () => {
   try {
-    const response = await axios.get<Product[]>(url)
+    const response = await axios.get<ProductType[]>(url)
     return response.data
   } catch (e) {
     const error = e as Error
@@ -46,8 +46,13 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchProductsAsync.rejected, (state, action) => {
-      state.loading = false
-      state.error = action.error.message
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.message
+        }
+      }
     })
   }
 })
