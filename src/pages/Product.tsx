@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
 
 import DiamondIcon from '@mui/icons-material/Diamond'
@@ -22,11 +22,12 @@ import Link from '@mui/material/Link'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import CheckIcon from '@mui/icons-material/Check';
-import { Category, Sort } from '../misc/type'
+import CheckIcon from '@mui/icons-material/Check'
+import { Category, ProductType, Sort } from '../misc/type'
 import { fetchProductsAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { sortByLowest, sortByHighest } from '../utils/sort'
+import { addToCart } from '../redux/slices/cartSlice'
 
 const Product = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -38,6 +39,11 @@ const Product = () => {
   const loading = useSelector((state: AppState) => state.products.loading)
   const error = useSelector((state: AppState) => state.products.error)
   const dispatch = useAppDispatch()
+  const cartDispatch = useDispatch()
+
+  const handleAddToCart = (product: ProductType) => {
+    cartDispatch(addToCart({ product }))
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -59,8 +65,8 @@ const Product = () => {
     selectedSort === 'Original'
       ? filteredProducts
       : selectedSort === 'Highest Price'
-        ? sortByHighest(filteredProducts, 'price')
-        : sortByLowest(filteredProducts, 'price')
+      ? sortByHighest(filteredProducts, 'price')
+      : sortByLowest(filteredProducts, 'price')
 
   if (loading) {
     return <Box>Loading...</Box>
@@ -79,7 +85,7 @@ const Product = () => {
               <SubjectIcon />
             </ListItemIcon>
             <ListItemText primary="All" />
-            {selectedCategory === 'All' ? <CheckIcon />: null}
+            {selectedCategory === 'All' ? <CheckIcon /> : null}
           </ListItemButton>
         </ListItem>
 
@@ -92,7 +98,7 @@ const Product = () => {
               <ElectricBoltIcon />
             </ListItemIcon>
             <ListItemText primary="Electronics" />
-            {selectedCategory === 'electronics' ? <CheckIcon />: null}
+            {selectedCategory === 'electronics' ? <CheckIcon /> : null}
           </ListItemButton>
         </ListItem>
 
@@ -105,7 +111,7 @@ const Product = () => {
               <DiamondIcon />
             </ListItemIcon>
             <ListItemText primary="Jewelery" />
-            {selectedCategory === 'jewelery' ? <CheckIcon />: null}
+            {selectedCategory === 'jewelery' ? <CheckIcon /> : null}
           </ListItemButton>
         </ListItem>
 
@@ -118,7 +124,7 @@ const Product = () => {
               <ManIcon />
             </ListItemIcon>
             <ListItemText primary="Men" />
-            {selectedCategory === 'men\u0027s clothing' ? <CheckIcon />: null}
+            {selectedCategory === 'men\u0027s clothing' ? <CheckIcon /> : null}
           </ListItemButton>
         </ListItem>
 
@@ -131,7 +137,9 @@ const Product = () => {
               <WomanIcon />
             </ListItemIcon>
             <ListItemText primary="Women" />
-            {selectedCategory === 'women\u0027s clothing' ? <CheckIcon />: null}
+            {selectedCategory === 'women\u0027s clothing' ? (
+              <CheckIcon />
+            ) : null}
           </ListItemButton>
         </ListItem>
       </List>
@@ -160,15 +168,27 @@ const Product = () => {
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
-            MenuListProps={{'aria-labelledby': 'basic-button'}}
+            MenuListProps={{ 'aria-labelledby': 'basic-button' }}
           >
-            <MenuItem onClick={() => {setSelectedSort('Original')}}>
+            <MenuItem
+              onClick={() => {
+                setSelectedSort('Original')
+              }}
+            >
               Original
             </MenuItem>
-            <MenuItem onClick={() => {setSelectedSort('Highest Price')}}>
+            <MenuItem
+              onClick={() => {
+                setSelectedSort('Highest Price')
+              }}
+            >
               Highest Price
             </MenuItem>
-            <MenuItem onClick={() => {setSelectedSort('Lowest Price')}}>
+            <MenuItem
+              onClick={() => {
+                setSelectedSort('Lowest Price')
+              }}
+            >
               Lowest Price
             </MenuItem>
           </Menu>
@@ -200,7 +220,14 @@ const Product = () => {
                 <Link component={RouterLink} to={`/products/${product.id}`}>
                   <Button size="small">More details</Button>
                 </Link>
-                <Button size="small">Add to cart</Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    handleAddToCart(product)
+                  }}
+                >
+                  Add to cart
+                </Button>
               </CardActions>
             </Card>
           ))}
