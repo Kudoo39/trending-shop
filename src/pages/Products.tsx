@@ -1,48 +1,42 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
 
-import DiamondIcon from '@mui/icons-material/Diamond'
-import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
-import ManIcon from '@mui/icons-material/Man'
-import SubjectIcon from '@mui/icons-material/Subject'
-import WomanIcon from '@mui/icons-material/Woman'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardMedia from '@mui/material/CardMedia'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import CheckIcon from '@mui/icons-material/Check'
-import { Category, ProductType, Sort } from '../misc/type'
+import Typography from '@mui/material/Typography'
+import Categories from '../components/Categories'
+import { ProductType, Sort } from '../misc/type'
+import { addToCart } from '../redux/slices/cartSlice'
 import { fetchProductsAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
-import { sortByLowest, sortByHighest } from '../utils/sort'
-import { addToCart } from '../redux/slices/cartSlice'
+import { sortByHighest, sortByLowest } from '../utils/sort'
 
-const Product = () => {
+const Products = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [selectedCategory, setSelectedCategory] = useState<Category>('All')
   const [selectedSort, setSelectedSort] = useState<Sort>('Original')
   const open = Boolean(anchorEl)
 
   const products = useSelector((state: AppState) => state.products.products)
+  const selectedCategory = useSelector((state: AppState) => state.categories.selectedCategory)
   const loading = useSelector((state: AppState) => state.products.loading)
   const error = useSelector((state: AppState) => state.products.error)
   const dispatch = useAppDispatch()
   const cartDispatch = useDispatch()
 
   const handleAddToCart = (product: ProductType) => {
-    cartDispatch(addToCart({ product }))
+    cartDispatch(
+      addToCart({
+        product
+      })
+    )
   }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -57,9 +51,7 @@ const Product = () => {
   }, [dispatch])
 
   let filteredProducts =
-    selectedCategory === 'All'
-      ? products
-      : products.filter(product => product.category === selectedCategory)
+    selectedCategory === 'All' ? products : products.filter(product => product.category === selectedCategory)
 
   let sortProducts =
     selectedSort === 'Original'
@@ -77,75 +69,18 @@ const Product = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <List sx={{ minWidth: '200px', marginLeft: '10px' }}>
-        <ListItem disablePadding onClick={() => setSelectedCategory('All')}>
-          <ListItemButton>
-            <ListItemIcon>
-              <SubjectIcon />
-            </ListItemIcon>
-            <ListItemText primary="All" />
-            {selectedCategory === 'All' ? <CheckIcon /> : null}
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem
-          disablePadding
-          onClick={() => setSelectedCategory('electronics')}
-        >
-          <ListItemButton>
-            <ListItemIcon>
-              <ElectricBoltIcon />
-            </ListItemIcon>
-            <ListItemText primary="Electronics" />
-            {selectedCategory === 'electronics' ? <CheckIcon /> : null}
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem
-          disablePadding
-          onClick={() => setSelectedCategory('jewelery')}
-        >
-          <ListItemButton>
-            <ListItemIcon>
-              <DiamondIcon />
-            </ListItemIcon>
-            <ListItemText primary="Jewelery" />
-            {selectedCategory === 'jewelery' ? <CheckIcon /> : null}
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem
-          disablePadding
-          onClick={() => setSelectedCategory('men\u0027s clothing')}
-        >
-          <ListItemButton>
-            <ListItemIcon>
-              <ManIcon />
-            </ListItemIcon>
-            <ListItemText primary="Men" />
-            {selectedCategory === 'men\u0027s clothing' ? <CheckIcon /> : null}
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem
-          disablePadding
-          onClick={() => setSelectedCategory('women\u0027s clothing')}
-        >
-          <ListItemButton>
-            <ListItemIcon>
-              <WomanIcon />
-            </ListItemIcon>
-            <ListItemText primary="Women" />
-            {selectedCategory === 'women\u0027s clothing' ? (
-              <CheckIcon />
-            ) : null}
-          </ListItemButton>
-        </ListItem>
-      </List>
-
+    <Box
+      sx={{
+        display: 'flex'
+      }}
+    >
+      <Categories />
       <Box>
-        <Box sx={{ margin: '10px 0 0 10px' }}>
+        <Box
+          sx={{
+            margin: '10px 0 0 10px'
+          }}
+        >
           <Button
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
@@ -168,7 +103,9 @@ const Product = () => {
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
-            MenuListProps={{ 'aria-labelledby': 'basic-button' }}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button'
+            }}
           >
             <MenuItem
               onClick={() => {
@@ -205,7 +142,10 @@ const Product = () => {
           {sortProducts.map(product => (
             <Card
               key={product.id}
-              sx={{ border: '1px solid black', padding: 2 }}
+              sx={{
+                border: '1px solid black',
+                padding: 2
+              }}
             >
               <Typography variant="h6">{product.title}</Typography>
               <Typography variant="body1">€{product.price}</Typography>
@@ -214,7 +154,11 @@ const Product = () => {
                 component="img"
                 alt="Product Images"
                 image={product.image}
-                sx={{ maxWidth: '100%', height: 'auto', display: 'block' }}
+                sx={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                  display: 'block'
+                }}
               />
               <CardActions>
                 <Link component={RouterLink} to={`/products/${product.id}`}>
@@ -237,4 +181,4 @@ const Product = () => {
   )
 }
 
-export default Product
+export default Products

@@ -1,4 +1,4 @@
 {
-  "prettier.printWidth": 80,
+  "prettier.printWidth": 120,
   "prettier.arrowParens": "avoid"
 }

@@ -2,14 +2,14 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
-import { fetchSingleProductAsync } from '../redux/slices/productSlice'
-import { AppState, useAppDispatch } from '../redux/store'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import CardMedia from '@mui/material/CardMedia'
 import CardActions from '@mui/material/CardActions'
 import Button from '@mui/material/Button'
+import { fetchSingleProductAsync } from '../redux/slices/productSlice'
+import { AppState, useAppDispatch } from '../redux/store'
 
 const ProductDetail = () => {
   const { id } = useParams()
