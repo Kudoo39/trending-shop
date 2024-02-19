@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Box from '@mui/material/Box'
@@ -10,8 +11,13 @@ import Link from '@mui/material/Link'
 import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import Badge from '@mui/material/Badge'
+import { AppState } from '../redux/store'
 
 const Nav = () => {
+  const cartItems = useSelector((state: AppState) => state.carts.carts)
+  const numberOfItems = cartItems.length
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const open = Boolean(anchorEl)
 
@@ -43,8 +49,12 @@ const Nav = () => {
           flexWrap: 'wrap'
         }}
       >
-        <SvgIcon component={ShopIcon} inheritViewBox sx={{ cursor: 'pointer', fontSize: '32px', margin: '0 10px' }} />
-        <Link component={RouterLink} to="/" style={{ textDecoration: 'none' }}>
+        <SvgIcon
+          component={ShopIcon}
+          inheritViewBox
+          sx={{ cursor: 'pointer', fontSize: '32px', margin: '0 10px' }}
+        />
+        <Link component={RouterLink} to="/" sx={{ textDecoration: 'none' }}>
           <Box
             sx={{
               'cursor': 'pointer',
@@ -56,7 +66,11 @@ const Nav = () => {
             Home
           </Box>
         </Link>
-        <Link component={RouterLink} to="/products" style={{ textDecoration: 'none' }}>
+        <Link
+          component={RouterLink}
+          to="/products"
+          sx={{ textDecoration: 'none' }}
+        >
           <Box
             sx={{
               'cursor': 'pointer',
@@ -72,7 +86,19 @@ const Nav = () => {
 
       <Box sx={{ display: 'flex' }}>
         <Tooltip title="Carts">
-          <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer' }} />
+          <Badge badgeContent={numberOfItems} color="primary">
+            <Link
+              component={RouterLink}
+              to="/cart"
+              sx={{
+                display: 'flex',
+                verticalAlign: 'middle',
+                color: 'inherit'
+              }}
+            >
+              <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer' }} />
+            </Link>
+          </Badge>
         </Tooltip>
         <Tooltip title="Profiles">
           <Button
@@ -91,7 +117,7 @@ const Nav = () => {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
-          MenuListProps={{'aria-labelledby': 'basic-button'}}
+          MenuListProps={{ 'aria-labelledby': 'basic-button' }}
         >
           <MenuItem onClick={handleClose}>Register</MenuItem>
           <MenuItem onClick={handleClose}>Log In</MenuItem>

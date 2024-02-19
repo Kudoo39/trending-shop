@@ -17,25 +17,31 @@ const initialState: InitialState = {
   loading: false
 }
 
-export const fetchProductsAsync = createAsyncThunk('fetchProductsAsync', async () => {
-  try {
-    const response = await axios.get<ProductType[]>(url)
-    return response.data
-  } catch (e) {
-    const error = e as AxiosError
-    return error
+export const fetchProductsAsync = createAsyncThunk(
+  'fetchProductsAsync',
+  async () => {
+    try {
+      const response = await axios.get<ProductType[]>(url)
+      return response.data
+    } catch (e) {
+      const error = e as AxiosError
+      return error
+    }
   }
-})
+)
 
-export const fetchSingleProductAsync = createAsyncThunk('fetchSingleProductAsync', async (id: number) => {
-  try {
-    const response = await axios.get<ProductType>(`${url}/${id}`)
-    return response.data
-  } catch (e) {
-    const error = e as Error
-    return error
+export const fetchSingleProductAsync = createAsyncThunk(
+  'fetchSingleProductAsync',
+  async (id: number) => {
+    try {
+      const response = await axios.get<ProductType>(`${url}/${id}`)
+      return response.data
+    } catch (e) {
+      const error = e as Error
+      return error
+    }
   }
-})
+)
 
 const productSlice = createSlice({
   name: 'products',
@@ -52,7 +58,7 @@ const productSlice = createSlice({
         }
       }
     })
-    builder.addCase(fetchProductsAsync.pending, (state) => {
+    builder.addCase(fetchProductsAsync.pending, state => {
       return {
         ...state,
         loading: true
@@ -77,7 +83,7 @@ const productSlice = createSlice({
         }
       }
     })
-    builder.addCase(fetchSingleProductAsync.pending, (state) => {
+    builder.addCase(fetchSingleProductAsync.pending, state => {
       return {
         ...state,
         loading: true
