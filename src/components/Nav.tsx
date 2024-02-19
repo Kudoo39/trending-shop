@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Box from '@mui/material/Box'
@@ -8,11 +9,11 @@ import SvgIcon from '@mui/material/SvgIcon'
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Badge from '@mui/material/Badge'
 import { AppState } from '../redux/store'
+import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 
 const Nav = () => {
   const cartItems = useSelector((state: AppState) => state.carts.carts)

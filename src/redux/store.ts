@@ -8,7 +8,7 @@ import cartReducer from './slices/cartSlice'
 // store all states
 const store = configureStore({
   reducer: {
-    category: categoryReducer,
+    categories: categoryReducer,
     products: productReducer,
     carts: cartReducer
   }

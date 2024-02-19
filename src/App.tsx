@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import Nav from './components/Nav'
 import Home from './pages/Home'
-import Product from './pages/Product'
+import Product from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
 import User from './components/User'
