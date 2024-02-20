@@ -32,11 +32,7 @@ const Products = () => {
   const cartDispatch = useDispatch()
 
   const handleAddToCart = (product: ProductType) => {
-    cartDispatch(
-      addToCart({
-        product
-      })
-    )
+    cartDispatch(addToCart(product))
   }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

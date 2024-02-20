@@ -11,7 +11,11 @@ export type ProductType = {
   image: string
 }
 
-export type CartType = {
-  product: ProductType
-  quantity?: number
+export type CartType = ProductType & {
+  quantity: number
+}
+
+export type UpdateQuantity = {
+  id: number
+  quantity: number
 }

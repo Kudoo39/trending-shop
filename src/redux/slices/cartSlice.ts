@@ -1,32 +1,45 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CartType } from '../../misc/type'
+import { CartType, ProductType, UpdateQuantity } from '../../misc/type'
 
 type InitialState = {
-  carts: CartType[]
-  quantity: number
+  cart: CartType[]
   loading: boolean
   error?: string
 }
 
 const initialState: InitialState = {
-  carts: [],
-  quantity: 0,
+  cart: [],
   loading: false
 }
 
 const cartSlice = createSlice({
-  name: 'carts',
+  name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<CartType>) => {
-      state.carts.push(action.payload)
+    addToCart: (state, action: PayloadAction<ProductType>) => {
+      const existingItem = state.cart.find(item => item.id === action.payload.id)
+      if (existingItem) {
+        existingItem.quantity += 1
+      } else {
+        const tempProduct = { ...action.payload, quantity: 1 }
+        state.cart.push(tempProduct)
+      }
     },
+
     removeFromCart: (state, action: PayloadAction<number>) => {
-      state.carts = state.carts.filter(item => item.product.id !== action.payload)
+      state.cart = state.cart.filter(item => item.id !== action.payload)
+    },
+
+    updateQuantity(state, action: PayloadAction<UpdateQuantity>) {
+      const { id, quantity } = action.payload
+      const updateItem = state.cart.find(item => item.id === id)
+      if (updateItem) {
+        updateItem.quantity += quantity
+      }
     }
   }
 })
 
-export const { addToCart, removeFromCart } = cartSlice.actions
+export const { addToCart, removeFromCart, updateQuantity } = cartSlice.actions
 
 export default cartSlice.reducer
