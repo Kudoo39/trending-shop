@@ -17,31 +17,25 @@ const initialState: InitialState = {
   loading: false
 }
 
-export const fetchProductsAsync = createAsyncThunk(
-  'fetchProductsAsync',
-  async () => {
-    try {
-      const response = await axios.get<ProductType[]>(url)
-      return response.data
-    } catch (e) {
-      const error = e as AxiosError
-      return error
-    }
+export const fetchProductsAsync = createAsyncThunk('fetchProductsAsync', async () => {
+  try {
+    const response = await axios.get<ProductType[]>(url)
+    return response.data
+  } catch (e) {
+    const error = e as AxiosError
+    return error
   }
-)
+})
 
-export const fetchSingleProductAsync = createAsyncThunk(
-  'fetchSingleProductAsync',
-  async (id: number) => {
-    try {
-      const response = await axios.get<ProductType>(`${url}/${id}`)
-      return response.data
-    } catch (e) {
-      const error = e as Error
-      return error
-    }
+export const fetchSingleProductAsync = createAsyncThunk('fetchSingleProductAsync', async (id: number) => {
+  try {
+    const response = await axios.get<ProductType>(`${url}/${id}`)
+    return response.data
+  } catch (e) {
+    const error = e as Error
+    return error
   }
-)
+})
 
 const productSlice = createSlice({
   name: 'products',

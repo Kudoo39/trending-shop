@@ -10,7 +10,7 @@ const store = configureStore({
   reducer: {
     categories: categoryReducer,
     products: productReducer,
-    carts: cartReducer
+    cart: cartReducer
   }
 })
 export type AppState = ReturnType<typeof store.getState>

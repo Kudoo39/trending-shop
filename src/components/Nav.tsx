@@ -16,8 +16,8 @@ import { AppState } from '../redux/store'
 import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 
 const Nav = () => {
-  const cartItems = useSelector((state: AppState) => state.carts.carts)
-  const numberOfItems = cartItems.length
+  const cartItems = useSelector((state: AppState) => state.cart.cart)
+  const totalItems = cartItems.reduce((total, currentItem) => total + currentItem.quantity, 0)
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const open = Boolean(anchorEl)
@@ -50,11 +50,7 @@ const Nav = () => {
           flexWrap: 'wrap'
         }}
       >
-        <SvgIcon
-          component={ShopIcon}
-          inheritViewBox
-          sx={{ cursor: 'pointer', fontSize: '32px', margin: '0 10px' }}
-        />
+        <SvgIcon component={ShopIcon} inheritViewBox sx={{ cursor: 'pointer', fontSize: '32px', margin: '0 10px' }} />
         <Link component={RouterLink} to="/" sx={{ textDecoration: 'none' }}>
           <Box
             sx={{
@@ -67,11 +63,7 @@ const Nav = () => {
             Home
           </Box>
         </Link>
-        <Link
-          component={RouterLink}
-          to="/products"
-          sx={{ textDecoration: 'none' }}
-        >
+        <Link component={RouterLink} to="/products" sx={{ textDecoration: 'none' }}>
           <Box
             sx={{
               'cursor': 'pointer',
@@ -87,7 +79,7 @@ const Nav = () => {
 
       <Box sx={{ display: 'flex' }}>
         <Tooltip title="Carts">
-          <Badge badgeContent={numberOfItems} color="primary">
+          <Badge badgeContent={totalItems} color="primary">
             <Link
               component={RouterLink}
               to="/cart"
