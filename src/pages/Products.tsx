@@ -8,10 +8,12 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardMedia from '@mui/material/CardMedia'
-import Link from '@mui/material/Link'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
+import CardActionArea from '@mui/material/CardActionArea'
+import CardContent from '@mui/material/CardContent'
+import CircularProgress from '@mui/material/CircularProgress'
 import Categories from '../components/Categories'
 import { ProductType, Sort } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
@@ -21,7 +23,7 @@ import { sortByHighest, sortByLowest } from '../utils/sort'
 
 const Products = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [selectedSort, setSelectedSort] = useState<Sort>('Original')
+  const [selectedSort, setSelectedSort] = useState<Sort>('Default')
   const open = Boolean(anchorEl)
 
   const products = useSelector((state: AppState) => state.products.products)
@@ -50,14 +52,18 @@ const Products = () => {
     selectedCategory === 'All' ? products : products.filter(product => product.category === selectedCategory)
 
   let sortProducts =
-    selectedSort === 'Original'
+    selectedSort === 'Default'
       ? filteredProducts
       : selectedSort === 'Highest Price'
       ? sortByHighest(filteredProducts, 'price')
       : sortByLowest(filteredProducts, 'price')
 
   if (loading) {
-    return <Box>Loading...</Box>
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress size={80} />
+      </Box>
+    )
   }
 
   if (error) {
@@ -72,11 +78,7 @@ const Products = () => {
     >
       <Categories />
       <Box>
-        <Box
-          sx={{
-            margin: '10px 0 0 10px'
-          }}
-        >
+        <Box sx={{ margin: '10px 0 0 10px' }}>
           <Button
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
@@ -105,10 +107,10 @@ const Products = () => {
           >
             <MenuItem
               onClick={() => {
-                setSelectedSort('Original')
+                setSelectedSort('Default')
               }}
             >
-              Original
+              Default
             </MenuItem>
             <MenuItem
               onClick={() => {
@@ -130,41 +132,69 @@ const Products = () => {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
             gap: 2,
-            margin: '10px'
+            margin: '10px',
+            justifyContent: 'center'
           }}
         >
           {sortProducts.map(product => (
             <Card
               key={product.id}
               sx={{
-                border: '1px solid black',
-                padding: 2
+                'border': '1px solid #ddd',
+                'borderRadius': '8px',
+                'boxShadow': '0 2px 4px rgba(0,0,0,0.1)',
+                'transition': 'transform 0.3s',
+                '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' },
+                'display': 'flex',
+                'flex-direction': 'column',
+                'justifyContent': 'space-between'
               }}
             >
-              <Typography variant="h6">{product.title}</Typography>
-              <Typography variant="body1">€{product.price}</Typography>
-              <Typography variant="body2">{product.description}</Typography>
-              <CardMedia
-                component="img"
-                alt="Product Images"
-                image={product.image}
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  alt={product.title}
+                  image={product.image}
+                  sx={{ height: 300, objectFit: 'cover' }}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="h2">
+                    {product.title}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary" sx={{ maxHeight: 60, overflow: 'hidden' }}>
+                    €{product.price}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {product.description}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+
+              <CardActions
                 sx={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                  display: 'block'
+                  justifyContent: 'space-between',
+                  borderTop: '1px solid #ddd',
+                  padding: '10px'
                 }}
-              />
-              <CardActions>
-                <Link component={RouterLink} to={`/products/${product.id}`}>
-                  <Button size="small">More details</Button>
-                </Link>
+              >
                 <Button
                   size="small"
-                  onClick={() => {
-                    handleAddToCart(product)
-                  }}
+                  color="primary"
+                  variant="outlined"
+                  component={RouterLink}
+                  to={`/products/${product.id}`}
+                  sx={{ fontWeight: 'bold', padding: 1 }}
+                >
+                  More detail
+                </Button>
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                  onClick={() => handleAddToCart(product)}
+                  sx={{ fontWeight: 'bold', padding: 1 }}
                 >
                   Add to cart
                 </Button>

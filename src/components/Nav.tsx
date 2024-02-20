@@ -7,7 +7,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Box from '@mui/material/Box'
 import SvgIcon from '@mui/material/SvgIcon'
 import Tooltip from '@mui/material/Tooltip'
-import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import Link from '@mui/material/Link'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -94,16 +94,16 @@ const Nav = () => {
           </Badge>
         </Tooltip>
         <Tooltip title="Profiles">
-          <Button
+          <IconButton
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
-            sx={{ minWidth: 'unset', padding: 0, color: 'inherit' }}
+            sx={{ minWidth: 'unset', padding: 0, color: 'inherit', margin: '0 17px' }}
           >
-            <PersonOutlineIcon sx={{ fontSize: '30px', margin: '0 17px' }} />
-          </Button>
+            <PersonOutlineIcon sx={{ fontSize: '30px' }} />
+          </IconButton>
         </Tooltip>
         <Menu
           id="basic-menu"

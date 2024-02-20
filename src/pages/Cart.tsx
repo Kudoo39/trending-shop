@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -7,13 +7,13 @@ import IconButton from '@mui/material/IconButton'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
-import { removeFromCart, updateQuantity } from '../redux/slices/cartSlice'
+import Divider from '@mui/material/Divider'
+import Button from '@mui/material/Button'
+import { clearCart, removeFromCart, updateQuantity } from '../redux/slices/cartSlice'
 import { AppState } from '../redux/store'
 
 const Cart = () => {
   const cartItems = useSelector((state: AppState) => state.cart.cart)
-  const loading = useSelector((state: AppState) => state.cart.loading)
-  const error = useSelector((state: AppState) => state.cart.error)
   const dispatch = useDispatch()
 
   const totalPrice = cartItems.reduce((total, currentItem) => total + currentItem.price * currentItem.quantity, 0)
@@ -30,40 +30,135 @@ const Cart = () => {
     dispatch(updateQuantity({ id, quantity: -1 }))
   }
 
-  if (loading) {
-    return <Box>Loading...</Box>
-  }
-
-  if (error) {
-    return <Box>Error: {error}</Box>
+  const handleCheckout = () => {
+    dispatch(clearCart())
+    toast.success('Your order has been processed!', { position: 'bottom-left' })
   }
 
   return (
-    <Box>
-      <Typography variant="h5">Cart Items</Typography>
-      {cartItems.map(cart => (
-        <Box key={cart.id} sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
-          <Typography variant="body1" sx={{ marginRight: 2 }}>
-            {cart.title}
-          </Typography>
-          <Typography variant="body2" sx={{ marginRight: 2 }}>
-            Price: €{cart.price}
-          </Typography>
-          <Typography variant="body2" sx={{ marginRight: 2 }}>
-            <IconButton onClick={() => handleDecrease(cart.id)} disabled={cart.quantity === 1}>
-              <RemoveIcon />
+    <Box
+      sx={{
+        backgroundColor: '#f4f4f4',
+        borderRadius: '8px',
+        padding: '20px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}
+    >
+      <Box>
+        {cartItems.map(cart => (
+          <Box
+            key={cart.id}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: 1,
+              borderBottom: '1px solid #ccc',
+              paddingBottom: '10px'
+            }}
+          >
+            <Box sx={{ marginRight: '10px' }}>
+              <img src={cart.image} alt={cart.title} style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
+            </Box>
+            <Box sx={{ flex: '2', display: 'flex', flexDirection: 'column', marginRight: 2 }}>
+              <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                Product:{' '}
+                <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                  {cart.title}
+                </Typography>
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                Price:{' '}
+                <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                  €{cart.price}
+                </Typography>
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                ID:{' '}
+                <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                  {cart.id}
+                </Typography>
+              </Typography>
+            </Box>
+            <Typography
+              variant="body2"
+              sx={{
+                flex: '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginRight: 2,
+                fontWeight: 'bold',
+                color: '#333'
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>
+                <IconButton onClick={() => handleDecrease(cart.id)} disabled={cart.quantity === 1}>
+                  <RemoveIcon />
+                </IconButton>
+                {cart.quantity}
+                <IconButton onClick={() => handleIncrease(cart.id)}>
+                  <AddIcon />
+                </IconButton>
+              </Box>
+            </Typography>
+            <IconButton onClick={() => handleRemove(cart.id)} sx={{ marginLeft: 'auto' }}>
+              <DeleteOutlineIcon sx={{ '&:hover': { color: 'red' } }} />
             </IconButton>
-            Quantity: {cart.quantity}
-            <IconButton onClick={() => handleIncrease(cart.id)}>
-              <AddIcon />
-            </IconButton>
+          </Box>
+        ))}
+      </Box>
+
+      <Box
+        sx={{
+          backgroundColor: '#f9f9f9',
+          borderRadius: '8px',
+          padding: '40px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          marginBottom: '20px',
+          height: 'fit-content',
+          marginLeft: '50px'
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: '10px', color: '#333' }}>
+          ORDER SUMMARY
+        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+          <Typography variant="body1" sx={{ color: '#555' }}>
+            Total:
           </Typography>
-          <IconButton onClick={() => handleRemove(cart.id)}>
-            <DeleteOutlineIcon sx={{ '&:hover': { color: 'red' } }} />
-          </IconButton>
+          <Typography variant="body1" sx={{ color: '#333' }}>
+            €{totalPrice.toFixed(2)}
+          </Typography>
         </Box>
-      ))}
-      <Typography variant="body1">total: €{totalPrice.toFixed(2)}</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+          <Typography variant="body1" sx={{ color: '#555' }}>
+            Estimate Shipping:
+          </Typography>
+          <Typography variant="body1" sx={{ color: '#333' }}>
+            €0.00
+          </Typography>
+        </Box>
+        <Divider sx={{ marginY: '10px', backgroundColor: '#ccc' }} />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+          <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#555' }}>
+            Subtotal:
+          </Typography>
+          <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+            €{totalPrice.toFixed(2)}
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ textTransform: 'none', marginTop: '10px' }}
+          onClick={() => handleCheckout()}
+        >
+          Checkout
+        </Button>
+      </Box>
     </Box>
   )
 }

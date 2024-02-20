@@ -3,7 +3,6 @@ import { Link as RouterLink } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import Link from '@mui/material/Link'
 import Background from '../assets/images/background.jpg'
 
 const Home = () => {
@@ -37,26 +36,36 @@ const Home = () => {
             flexDirection: 'column'
           }}
         >
-          <Typography variant="h6" sx={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '20px' }}>
-            Best Place to Buy Products
+          <Typography variant="h6" sx={{ fontSize: '13px', fontWeight: 'bold', marginBottom: '20px' }}>
+            Your Destination for Quality Finds
           </Typography>
           <Typography
             variant="h2"
             sx={{
               fontSize: '40px',
-              marginBottom: '20px'
+              marginBottom: '20px',
+              fontWeight: 'bold'
             }}
           >
             Trending Shop
           </Typography>
           <Typography variant="body1" sx={{ fontWeight: 400, margin: '0px 20px 30px 20px' }}>
-            Hello World, cause you are my world :3
+            Welcome to Trending Shop, where every product tells a story. From handpicked items to the latest trends!
           </Typography>
-          <Link component={RouterLink} to="/products" sx={{ textDecoration: 'none' }}>
-            <Button variant="contained" sx={{ fontWeight: 400, padding: '20px' }}>
-              <span>Explore Our Products</span>
-            </Button>
-          </Link>
+          <Button
+            variant="outlined"
+            component={RouterLink}
+            to="/products"
+            sx={{
+              'fontWeight': 600,
+              'padding': '12px 30px',
+              'borderColor': '#fff',
+              'color': '#fff',
+              '&:hover': { color: '#2196f3' }
+            }}
+          >
+            <span>Explore Our Products</span>
+          </Button>
         </Box>
       </Box>
     </Box>
