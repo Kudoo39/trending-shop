@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
+
 import { ProductType } from '../../misc/type'
 
 const url = 'https://fakestoreapi.com/products'

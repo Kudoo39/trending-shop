@@ -31,8 +31,12 @@ const Cart = () => {
   }
 
   const handleCheckout = () => {
-    dispatch(clearCart())
-    toast.success('Your order has been processed!', { position: 'bottom-left' })
+    if (cartItems.length === 0) {
+      toast.error('There is no product!', { position: 'bottom-left' })
+    } else {
+      toast.success('Your order has been processed!', { position: 'bottom-left' })
+      dispatch(clearCart())
+    }
   }
 
   return (

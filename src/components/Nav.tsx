@@ -80,15 +80,7 @@ const Nav = () => {
       <Box sx={{ display: 'flex' }}>
         <Tooltip title="Carts">
           <Badge badgeContent={totalItems} color="primary">
-            <Link
-              component={RouterLink}
-              to="/cart"
-              sx={{
-                display: 'flex',
-                verticalAlign: 'middle',
-                color: 'inherit'
-              }}
-            >
+            <Link component={RouterLink} to="/cart" sx={{ display: 'flex', verticalAlign: 'middle', color: 'inherit' }}>
               <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer' }} />
             </Link>
           </Badge>
@@ -112,8 +104,8 @@ const Nav = () => {
           onClose={handleClose}
           MenuListProps={{ 'aria-labelledby': 'basic-button' }}
         >
-          <MenuItem onClick={handleClose}>Register</MenuItem>
-          <MenuItem onClick={handleClose}>Log In</MenuItem>
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={handleClose}>Log In / Register</MenuItem>
         </Menu>
       </Box>
     </Box>

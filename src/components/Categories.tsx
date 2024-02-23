@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import CheckIcon from '@mui/icons-material/Check'
 import DiamondIcon from '@mui/icons-material/Diamond'
@@ -24,57 +23,25 @@ const Categories = () => {
     dispatch(setSelectedCategory(category))
   }
 
+  const categories = [
+    { id: 'All', icon: <SubjectIcon />, label: 'All' },
+    { id: 'electronics', icon: <ElectricBoltIcon />, label: 'Electronics' },
+    { id: 'jewelery', icon: <DiamondIcon />, label: 'Jewelery' },
+    { id: 'men\u0027s clothing', icon: <ManIcon />, label: 'Men' },
+    { id: 'women\u0027s clothing', icon: <WomanIcon />, label: 'Women' }
+  ]
+
   return (
     <List sx={{ minWidth: '200px', marginLeft: '10px' }}>
-      <ListItem disablePadding onClick={() => handleCategory('All')}>
-        <ListItemButton>
-          <ListItemIcon>
-            <SubjectIcon />
-          </ListItemIcon>
-          <ListItemText primary="All" />
-          {selectedCategory === 'All' ? <CheckIcon /> : null}
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem disablePadding onClick={() => handleCategory('electronics')}>
-        <ListItemButton>
-          <ListItemIcon>
-            <ElectricBoltIcon />
-          </ListItemIcon>
-          <ListItemText primary="Electronics" />
-          {selectedCategory === 'electronics' ? <CheckIcon /> : null}
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem disablePadding onClick={() => handleCategory('jewelery')}>
-        <ListItemButton>
-          <ListItemIcon>
-            <DiamondIcon />
-          </ListItemIcon>
-          <ListItemText primary="Jewelery" />
-          {selectedCategory === 'jewelery' ? <CheckIcon /> : null}
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem disablePadding onClick={() => handleCategory('men\u0027s clothing')}>
-        <ListItemButton>
-          <ListItemIcon>
-            <ManIcon />
-          </ListItemIcon>
-          <ListItemText primary="Men" />
-          {selectedCategory === 'men\u0027s clothing' ? <CheckIcon /> : null}
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem disablePadding onClick={() => handleCategory('women\u0027s clothing')}>
-        <ListItemButton>
-          <ListItemIcon>
-            <WomanIcon />
-          </ListItemIcon>
-          <ListItemText primary="Women" />
-          {selectedCategory === 'women\u0027s clothing' ? <CheckIcon /> : null}
-        </ListItemButton>
-      </ListItem>
+      {categories.map(category => (
+        <ListItem key={category.id} disablePadding onClick={() => handleCategory(category.id as Category)}>
+          <ListItemButton>
+            <ListItemIcon>{category.icon}</ListItemIcon>
+            <ListItemText primary={category.label} />
+            {selectedCategory === category.id ? <CheckIcon /> : null}
+          </ListItemButton>
+        </ListItem>
+      ))}
     </List>
   )
 }
