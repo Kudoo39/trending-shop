@@ -8,6 +8,9 @@ import Cart from './pages/Cart'
 import User from './components/User'
 import Footer from './components/Footer'
 import Box from '@mui/material/Box'
+import Login from './pages/Login'
+import Profile from './pages/Profile'
+import Register from './pages/Register'
 import './App.css'
 
 const App = () => {
@@ -21,6 +24,9 @@ const App = () => {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/user" element={<User />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
         </Routes>
       </Box>
       <Footer />
