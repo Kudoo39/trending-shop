@@ -19,3 +19,15 @@ export type UpdateQuantity = {
   id: number
   quantity: number
 }
+
+export type UserRegister = {
+  name: string
+  email: string
+  password: string
+  avatar: string
+}
+
+export type User = UserRegister & {
+  role: 'customer' | 'admin'
+  id: number
+}
