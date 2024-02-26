@@ -1,8 +1,6 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 
 import TextField from '@mui/material/TextField'
@@ -11,11 +9,12 @@ import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
-import { saveUserInformation } from '../redux/slices/userSlice'
+import { registerUserAsync } from '../redux/slices/userSlice'
+import { useAppDispatch } from '../redux/store'
 
 const Register = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const formik = useFormik({
     initialValues: {
@@ -23,7 +22,8 @@ const Register = () => {
       name: '',
       password: '',
       confirmedPassword: '',
-      avatar: ''
+      avatar:
+        'https://images.unsplash.com/photo-1554080353-a576cf803bda?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cGhvdG98ZW58MHx8MHx8fDA%3D'
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Required').min(4, 'Must be 4 or more characters'),
@@ -32,33 +32,23 @@ const Register = () => {
         .matches(/^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/, 'Please enter a valid email address'),
       password: Yup.string()
         .required('Required')
-        .matches(/^.{8,}$/, 'Password must be at least 8 characters'),
+        .matches(/^.{6,}$/, 'Password must be at least 6 characters'),
       confirmedPassword: Yup.string()
         .required('Required')
         .oneOf([Yup.ref('password')], 'Password must match'),
       avatar: Yup.string().required('Required')
     }),
-    // onSubmit: (value, { resetForm }) => {
-    //   toast.success('Account created successfully!', { position: 'bottom-left' })
-    //   console.log(value)
-    //   resetForm()
-    // }
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       // eslint-disable-next-line no-unused-vars
       const { confirmedPassword, ...data } = values
-      axios
-        .post('https://api.escuelajs.co/api/v1/users/', data)
-        .then(response => {
-          if (response.status === 201) {
-            toast.success('Account created successfully!', { position: 'bottom-left' })
-            dispatch(saveUserInformation(response.data))
-            navigate('/login')
-          }
-        })
-        // eslint-disable-next-line no-console
-        .catch(error => console.log(error))
+      try {
+        await dispatch(registerUserAsync(data))
+        toast.success('Account created successfully!', { position: 'bottom-left' })
+        navigate('/login')
+      } catch (error) {
+        toast.error('Registration failed. Please try again.', { position: 'bottom-left' })
+      }
 
-      // Reset the form after submission
       resetForm()
     }
   })
@@ -71,7 +61,7 @@ const Register = () => {
       <FormControl
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        sx={{ display: 'flex', flexDixrection: 'column', alignItems: 'center' }}
       >
         <TextField
           id="name"
