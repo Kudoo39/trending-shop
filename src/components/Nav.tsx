@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
@@ -14,9 +14,13 @@ import MenuItem from '@mui/material/MenuItem'
 import Badge from '@mui/material/Badge'
 import { AppState } from '../redux/store'
 import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
+import { logout } from '../redux/slices/userSlice'
 
 const Nav = () => {
   const cartItems = useSelector((state: AppState) => state.cart.cart)
+  const authenticate = useSelector((state: AppState) => state.users.isAuthenticated)
+  const dispatch = useDispatch()
+
   const totalItems = cartItems.reduce((total, currentItem) => total + currentItem.quantity, 0)
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
@@ -27,6 +31,11 @@ const Nav = () => {
   }
 
   const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    dispatch(logout())
     setAnchorEl(null)
   }
 
@@ -107,9 +116,14 @@ const Nav = () => {
           <Link component={RouterLink} to="/profile" sx={{ textDecoration: 'none', color: 'inherit' }}>
             <MenuItem onClick={handleClose}>Profile</MenuItem>
           </Link>
-          <Link component={RouterLink} to="/login" sx={{ textDecoration: 'none', color: 'inherit' }}>
-            <MenuItem onClick={handleClose}>Log In / Register</MenuItem>
-          </Link>
+
+          {authenticate ? (
+            <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+          ) : (
+            <Link component={RouterLink} to="/login" sx={{ textDecoration: 'none', color: 'inherit' }}>
+              <MenuItem onClick={handleClose}>Log In / Register</MenuItem>
+            </Link>
+          )}
         </Menu>
       </Box>
     </Box>

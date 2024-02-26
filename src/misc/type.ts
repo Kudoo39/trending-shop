@@ -20,10 +20,13 @@ export type UpdateQuantity = {
   quantity: number
 }
 
-export type UserRegister = {
-  name: string
+export interface UserCredential {
   email: string
   password: string
+}
+
+export type UserRegister = UserCredential & {
+  name: string
   avatar: string
 }
 

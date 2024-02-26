@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
+import { useFormik } from 'formik'
 
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -10,29 +10,25 @@ import Link from '@mui/material/Link'
 import FormControl from '@mui/material/FormControl'
 import { loginUserAsync } from '../redux/slices/userSlice'
 import { AppState, useAppDispatch } from '../redux/store'
+import { UserCredential } from '../misc/type'
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const loading = useSelector((state: AppState) => state.users.loading)
   const error = useSelector((state: AppState) => state.users.error)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  // const handleLoginEvent = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   let userCredential = {
-  //     email,
-  //     password
-  //   }
-  //   dispatch(loginUserAsync(userCredential)).then(result => {
-  //     if (result.payload) {
-  //       setEmail('')
-  //       setPassword('')
-  //       navigate('/')
-  //     }
-  //   })
-  // }
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+
+    onSubmit: (userCredential: UserCredential) => {
+      dispatch(loginUserAsync(userCredential))
+      navigate('/profile')
+    }
+  })
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 4 }}>
@@ -41,7 +37,7 @@ const Login = () => {
       </Typography>
       <FormControl
         component="form"
-        // onSubmit={handleLoginEvent}
+        onSubmit={formik.handleSubmit}
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
         <TextField
@@ -51,9 +47,8 @@ const Login = () => {
           id="email"
           label="Email Address"
           name="email"
-          autoComplete="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
           sx={{ marginBottom: 2, width: '300px' }}
         />
 
@@ -65,9 +60,8 @@ const Login = () => {
           label="Password"
           type="password"
           id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
           sx={{ marginBottom: 2, width: '300px' }}
         />
 
