@@ -1,6 +1,18 @@
-export type Category = 'All' | 'electronics' | 'jewelery' | 'men\u0027s clothing' | 'women\u0027s clothing'
-
 export type Sort = 'Default' | 'Highest Price' | 'Lowest Price'
+
+export type Category = {
+  id: number
+  name: string
+  image: string
+}
+
+export interface CreateProductType {
+  title: string
+  price: number
+  description: string
+  categoryId: number
+  images: string[]
+}
 
 export type ProductType = {
   id: number
@@ -8,7 +20,7 @@ export type ProductType = {
   price: number
   description: string
   category: Category
-  image: string
+  images: string[]
 }
 
 export type CartType = ProductType & {

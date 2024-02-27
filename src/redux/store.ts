@@ -18,11 +18,4 @@ const store = configureStore({
 export type AppState = ReturnType<typeof store.getState>
 export const useAppDispatch = () => useDispatch<typeof store.dispatch>()
 
-store.subscribe(() => {
-  const currentState = store.getState()
-  const userInformation = currentState.users.user
-
-  localStorage.setItem('userInformation', JSON.stringify(userInformation))
-})
-
 export default store

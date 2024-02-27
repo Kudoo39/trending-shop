@@ -20,6 +20,9 @@ import { addToCart } from '../redux/slices/cartSlice'
 import { fetchProductsAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { sortByHighest, sortByLowest } from '../utils/sort'
+import { checkImage } from '../utils/checkImage'
+import defaultImage from '../assets/images/default_image.jpg'
+import CreateProduct from '../components/CreateProduct'
 
 const Products = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -49,14 +52,18 @@ const Products = () => {
   }, [dispatch])
 
   let filteredProducts =
-    selectedCategory === 'All' ? products : products.filter(product => product.category === selectedCategory)
+    selectedCategory === 0
+      ? products
+      : products.filter(product => {
+        return product.category.id === selectedCategory // prettier-ignore
+      }) // prettier-ignore
 
   let sortProducts =
     selectedSort === 'Default'
       ? filteredProducts
       : selectedSort === 'Highest Price'
-      ? sortByHighest(filteredProducts, 'price')
-      : sortByLowest(filteredProducts, 'price')
+        ? sortByHighest(filteredProducts, 'price') // prettier-ignore
+        : sortByLowest(filteredProducts, 'price') // prettier-ignore
 
   if (loading) {
     return (
@@ -71,68 +78,67 @@ const Products = () => {
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex'
-      }}
-    >
+    <Box sx={{ display: 'flex' }}>
       <Categories />
       <Box>
-        <Box sx={{ margin: '10px 0 0 10px' }}>
-          <Button
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-            endIcon={<KeyboardArrowDownIcon />}
-            sx={{
-              minWidth: 'unset',
-              padding: 1,
-              color: 'inherit',
-              fontWeight: '500',
-              border: '1px solid black'
-            }}
-          >
-            Sort by: {selectedSort}
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button'
-            }}
-          >
-            <MenuItem
-              onClick={() => {
-                setSelectedSort('Default')
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ margin: '10px 0 0 10px' }}>
+            <Button
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              endIcon={<KeyboardArrowDownIcon />}
+              sx={{
+                minWidth: 'unset',
+                padding: 1,
+                color: 'inherit',
+                fontWeight: '500',
+                border: '1px solid black'
               }}
             >
-              Default
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                setSelectedSort('Highest Price')
+              Sort by: {selectedSort}
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button'
               }}
             >
-              Highest Price
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                setSelectedSort('Lowest Price')
-              }}
-            >
-              Lowest Price
-            </MenuItem>
-          </Menu>
+              <MenuItem
+                onClick={() => {
+                  setSelectedSort('Default')
+                }}
+              >
+                Default
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setSelectedSort('Highest Price')
+                }}
+              >
+                Highest Price
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setSelectedSort('Lowest Price')
+                }}
+              >
+                Lowest Price
+              </MenuItem>
+            </Menu>
+          </Box>
+          <CreateProduct />
         </Box>
 
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+            gridTemplateColumns: 'repeat(4, 1fr)',
             gap: 2,
             margin: '10px',
             justifyContent: 'center'
@@ -148,7 +154,7 @@ const Products = () => {
                 'transition': 'transform 0.3s',
                 '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' },
                 'display': 'flex',
-                'flex-direction': 'column',
+                'flexDirection': 'column',
                 'justifyContent': 'space-between'
               }}
             >
@@ -156,18 +162,18 @@ const Products = () => {
                 <CardMedia
                   component="img"
                   alt={product.title}
-                  image={product.image}
+                  image={checkImage(product.images[0]) ? product.images[0] : defaultImage}
                   sx={{ height: 300, objectFit: 'cover' }}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h6" component="h2">
                     {product.title}
                   </Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ maxHeight: 60, overflow: 'hidden' }}>
-                    €{product.price}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {product.description}
+                  <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
+                    Price:{' '}
+                    <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                      €{product.price}
+                    </Typography>
                   </Typography>
                 </CardContent>
               </CardActionArea>
