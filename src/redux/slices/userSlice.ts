@@ -6,7 +6,7 @@ import { User, UserCredential, UserRegister } from '../../misc/type'
 
 const userUrl = 'https://api.escuelajs.co/api/v1/users'
 const loginUrl = 'https://api.escuelajs.co/api/v1/auth/login'
-const ProfileUrl = 'https://api.escuelajs.co/api/v1/auth/profile'
+const profileUrl = 'https://api.escuelajs.co/api/v1/auth/profile'
 
 type InitialState = {
   user?: User | null
@@ -25,16 +25,18 @@ const initialState: InitialState = {
 export const registerUserAsync = createAsyncThunk('registerUserAsync', async (userData: UserRegister) => {
   try {
     const response = await axios.post(userUrl, userData)
+    toast.success('Account created successfully!', { position: 'bottom-left' })
     return response.data
   } catch (e) {
     const error = e as AxiosError
+    toast.error('Registration failed. Please try again.', { position: 'bottom-left' })
     return error
   }
 })
 
 export const authenticateUserAsync = createAsyncThunk('authenticateUserAsync', async (access_token: string) => {
   try {
-    const authentication = await axios.get(ProfileUrl, {
+    const authentication = await axios.get(profileUrl, {
       headers: {
         Authorization: `Bearer ${access_token}`
       }

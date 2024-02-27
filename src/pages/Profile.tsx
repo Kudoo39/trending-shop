@@ -18,17 +18,16 @@ const Profile = () => {
     <Box
       sx={{
         maxWidth: 600,
-        margin: '8px auto 0',
+        margin: '12px auto 0',
         padding: 3,
         boxShadow: 1,
-        borderRadius: 4,
-        backgroundColor: 'background.paper'
+        borderRadius: 4
       }}
     >
       {user && (
         <>
           <Box sx={{ margin: '8px 0 8px 0' }}>
-            <img src={user.avatar} alt="Avatar" style={{ width: 100, height: 100, borderRadius: '50%' }} />
+            <img src={user.avatar} alt="Avatar" style={{ width: 120, height: 120, borderRadius: '50%' }} />
           </Box>
           <Box sx={{ marginBottom: 2 }}>
             <Typography variant="h5" component="h1" sx={{ marginBottom: 1 }}>
@@ -38,10 +37,14 @@ const Profile = () => {
               {user.email}
             </Typography>
           </Box>
-          <Box>
-            <Typography variant="body1">Role: {user.role}</Typography>
-            <Typography variant="body1">ID: {user.id}</Typography>
-            <Button onClick={handleLogout}>Log Out</Button>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box>
+              <Typography variant="body1">Role: {user.role}</Typography>
+              <Typography variant="body1">ID: {user.id}</Typography>
+            </Box>
+            <Button variant="contained" onClick={handleLogout}>
+              Log Out
+            </Button>
           </Box>
         </>
       )}

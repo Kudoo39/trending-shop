@@ -42,10 +42,8 @@ const Cart = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#f4f4f4',
         borderRadius: '8px',
         padding: '20px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         display: 'flex',
         justifyContent: 'space-between'
       }}
@@ -63,7 +61,11 @@ const Cart = () => {
             }}
           >
             <Box sx={{ marginRight: '10px' }}>
-              <img src={cart.image} alt={cart.title} style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
+              <img
+                src={cart.images[0]}
+                alt={cart.title}
+                style={{ width: '50px', height: '50px', borderRadius: '8px' }}
+              />
             </Box>
             <Box sx={{ flex: '2', display: 'flex', flexDirection: 'column', marginRight: 2 }}>
               <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>

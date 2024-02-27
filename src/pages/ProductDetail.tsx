@@ -15,6 +15,8 @@ import { fetchSingleProductAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { ProductType } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
+import { checkImage } from '../utils/checkImage'
+import defaultImage from '../assets/images/default_image.jpg'
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -51,7 +53,7 @@ const ProductDetail = () => {
         <Card
           key={product.id}
           sx={{
-            maxWidth: 600,
+            maxWidth: 500,
             width: '100%',
             border: '1px solid #ddd',
             borderRadius: '8px',
@@ -62,9 +64,10 @@ const ProductDetail = () => {
           <CardMedia
             component="img"
             alt="Product Images"
-            image={product.image}
+            image={checkImage(product.images[0]) ? product.images[0] : defaultImage}
             sx={{ maxHeight: 400, objectFit: 'cover', borderRadius: '8px 8px 0 0' }}
           />
+
           <Box sx={{ padding: 2 }}>
             <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
               Product ID: {product.id}
@@ -84,11 +87,14 @@ const ProductDetail = () => {
             <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
               Category:{' '}
               <Typography component="span" sx={{ fontWeight: 'normal' }}>
-                {product.category}
+                {product.category.name}
               </Typography>
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333', marginTop: 1 }}>
-              Description: <Typography sx={{ fontWeight: 'normal' }}>{product.description}</Typography>
+              Description:
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 'normal' }}>
+              {product.description}
             </Typography>
 
             <CardActions sx={{ justifyContent: 'space-between', marginTop: 2 }}>

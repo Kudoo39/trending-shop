@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { toast } from 'react-toastify'
 import axios, { AxiosError } from 'axios'
 
-import { ProductType } from '../../misc/type'
+import { CreateProductType, ProductType } from '../../misc/type'
 
-const url = 'https://fakestoreapi.com/products'
+const url = 'https://api.escuelajs.co/api/v1/products'
 
 type InitialState = {
   products: ProductType[]
@@ -34,6 +35,18 @@ export const fetchSingleProductAsync = createAsyncThunk('fetchSingleProductAsync
     return response.data
   } catch (e) {
     const error = e as Error
+    return error
+  }
+})
+
+export const createProductsAsync = createAsyncThunk('createProductsAsync', async (newProduct: CreateProductType) => {
+  try {
+    const response = await axios.post(url, newProduct)
+    toast.success('Product added successfully!', { position: 'bottom-left' })
+    return response.data
+  } catch (e) {
+    const error = e as AxiosError
+    toast.error('Product added failed :(', { position: 'bottom-left' })
     return error
   }
 })
@@ -85,6 +98,29 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchSingleProductAsync.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.message
+        }
+      }
+    })
+    // createProductsAsync
+    builder.addCase(createProductsAsync.fulfilled, (state, action) => {
+      return {
+        ...state,
+        products: [...state.products, action.payload],
+        loading: false
+      }
+    })
+    builder.addCase(createProductsAsync.pending, state => {
+      return {
+        ...state,
+        loading: true
+      }
+    })
+    builder.addCase(createProductsAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
         return {
           ...state,

@@ -1,7 +1,6 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
@@ -43,12 +42,10 @@ const Register = () => {
       const { confirmedPassword, ...data } = values
       try {
         await dispatch(registerUserAsync(data))
-        toast.success('Account created successfully!', { position: 'bottom-left' })
         navigate('/login')
       } catch (error) {
-        toast.error('Registration failed. Please try again.', { position: 'bottom-left' })
+        return error
       }
-
       resetForm()
     }
   })
@@ -61,7 +58,7 @@ const Register = () => {
       <FormControl
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{ display: 'flex', flexDixrection: 'column', alignItems: 'center' }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
         <TextField
           id="name"
@@ -138,11 +135,11 @@ const Register = () => {
           sx={{ marginBottom: 1, width: '300px' }}
         />
 
-        <Button type="submit" variant="contained" sx={{ width: '300px', marginTop: 1 }}>
+        <Button type="submit" variant="contained" sx={{ width: '300px', marginTop: 2 }}>
           Register
         </Button>
       </FormControl>
-      <Link component={RouterLink} to="/login" sx={{ marginTop: 1, paddingBottom: 4 }}>
+      <Link component={RouterLink} to="/login" sx={{ marginTop: 2, paddingBottom: 4 }}>
         Log in to your account!
       </Link>
     </Box>

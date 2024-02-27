@@ -70,7 +70,7 @@ const Login = () => {
         </Button>
         {error && <Typography sx={{ color: 'red', marginTop: 1 }}>{error}</Typography>}
       </FormControl>
-      <Link component={RouterLink} to="/register" sx={{ marginTop: 1 }}>
+      <Link component={RouterLink} to="/register" sx={{ marginTop: 2 }}>
         Create a new account!
       </Link>
     </Box>
