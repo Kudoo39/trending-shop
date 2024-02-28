@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
 import axios, { AxiosError } from 'axios'
 
-import { CreateProductType, ProductType } from '../../misc/type'
+import { CreateProductType, ProductType, UpdateProductType } from '../../misc/type'
 
 const url = 'https://api.escuelajs.co/api/v1/products'
 
@@ -47,6 +47,33 @@ export const createProductsAsync = createAsyncThunk('createProductsAsync', async
   } catch (e) {
     const error = e as AxiosError
     toast.error('Product added failed :(', { position: 'bottom-left' })
+    return error
+  }
+})
+
+export const updateProductAsync = createAsyncThunk(
+  'updateProductAsync',
+  async ({ updateProduct, productId }: { updateProduct: UpdateProductType; productId: number }) => {
+    try {
+      const response = await axios.put(`${url}/${productId}`, updateProduct)
+      toast.success('Product updated successfully!', { position: 'bottom-left' })
+      return response.data
+    } catch (e) {
+      const error = e as AxiosError
+      toast.error('Product updated failed :(', { position: 'bottom-left' })
+      return error
+    }
+  }
+)
+
+export const deleteProductAsync = createAsyncThunk('deleteProductAsync', async (productId: number) => {
+  try {
+    const response = await axios.delete(`${url}/${productId}`)
+    toast.success('Product removed successfully!', { position: 'bottom-left' })
+    return response.data
+  } catch (e) {
+    const error = e as AxiosError
+    toast.error('Product removed failed :(', { position: 'bottom-left' })
     return error
   }
 })
@@ -121,6 +148,56 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(createProductsAsync.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.message
+        }
+      }
+    })
+    // updateProductAsync
+    builder.addCase(updateProductAsync.fulfilled, (state, action) => {
+      const findingProduct = state.products.findIndex(item => item.id === action.payload.id)
+      if (findingProduct !== -1) {
+        return {
+          ...state,
+          products: state.products.map((product, index) => (index === findingProduct ? action.payload : product)),
+          loading: false
+        }
+      }
+      return state
+    })
+    builder.addCase(updateProductAsync.pending, state => {
+      return {
+        ...state,
+        loading: true
+      }
+    })
+    builder.addCase(updateProductAsync.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.message
+        }
+      }
+    })
+    // deleteProductAsync
+    builder.addCase(deleteProductAsync.fulfilled, (state, action) => {
+      return {
+        ...state,
+        products: state.products.filter(product => product.id !== action.payload.id),
+        loading: false
+      }
+    })
+    builder.addCase(deleteProductAsync.pending, state => {
+      return {
+        ...state,
+        loading: true
+      }
+    })
+    builder.addCase(deleteProductAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
         return {
           ...state,
