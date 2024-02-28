@@ -15,14 +15,15 @@ import CardActionArea from '@mui/material/CardActionArea'
 import CardContent from '@mui/material/CardContent'
 import CircularProgress from '@mui/material/CircularProgress'
 import Categories from '../components/Categories'
+import CreateProduct from '../components/CreateProduct'
 import { ProductType, Sort } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
 import { fetchProductsAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { sortByHighest, sortByLowest } from '../utils/sort'
 import { checkImage } from '../utils/checkImage'
+import { cleanImage } from '../utils/cleanImage'
 import defaultImage from '../assets/images/default_image.jpg'
-import CreateProduct from '../components/CreateProduct'
 
 const Products = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -162,7 +163,7 @@ const Products = () => {
                 <CardMedia
                   component="img"
                   alt={product.title}
-                  image={checkImage(product.images[0]) ? product.images[0] : defaultImage}
+                  image={checkImage(cleanImage(product.images[0])) ? cleanImage(product.images[0]) : defaultImage}
                   sx={{ height: 300, objectFit: 'cover' }}
                 />
                 <CardContent>

@@ -8,10 +8,17 @@ export type Category = {
 
 export interface CreateProductType {
   title: string
-  price: number
+  price: number | null
   description: string
   categoryId: number
   images: string[]
+}
+
+export interface UpdateProductType {
+  title?: string
+  price?: number
+  description?: string
+  images?: string[]
 }
 
 export type ProductType = {

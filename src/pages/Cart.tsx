@@ -1,16 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import AddIcon from '@mui/icons-material/Add'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import RemoveIcon from '@mui/icons-material/Remove'
-import Divider from '@mui/material/Divider'
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import CardMedia from '@mui/material/CardMedia'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
 import { clearCart, removeFromCart, updateQuantity } from '../redux/slices/cartSlice'
 import { AppState } from '../redux/store'
+
+import defaultImage from '../assets/images/default_image.jpg'
+import { checkImage } from '../utils/checkImage'
+import { cleanImage } from '../utils/cleanImage'
 
 const Cart = () => {
   const cartItems = useSelector((state: AppState) => state.cart.cart)
@@ -61,10 +66,11 @@ const Cart = () => {
             }}
           >
             <Box sx={{ marginRight: '10px' }}>
-              <img
-                src={cart.images[0]}
-                alt={cart.title}
-                style={{ width: '50px', height: '50px', borderRadius: '8px' }}
+              <CardMedia
+                component="img"
+                alt="Product Images"
+                image={checkImage(cleanImage(cart.images[0])) ? cleanImage(cart.images[0]) : defaultImage}
+                sx={{ width: '75px', height: '75px', borderRadius: '8px' }}
               />
             </Box>
             <Box sx={{ flex: '2', display: 'flex', flexDirection: 'column', marginRight: 2 }}>

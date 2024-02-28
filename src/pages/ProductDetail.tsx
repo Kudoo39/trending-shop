@@ -11,11 +11,13 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import CircularProgress from '@mui/material/CircularProgress'
 import ReplyIcon from '@mui/icons-material/Reply'
+import UpdateProduct from '../components/UpdateProduct'
 import { fetchSingleProductAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { ProductType } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
 import { checkImage } from '../utils/checkImage'
+import { cleanImage } from '../utils/cleanImage'
 import defaultImage from '../assets/images/default_image.jpg'
 
 const ProductDetail = () => {
@@ -64,7 +66,7 @@ const ProductDetail = () => {
           <CardMedia
             component="img"
             alt="Product Images"
-            image={checkImage(product.images[0]) ? product.images[0] : defaultImage}
+            image={checkImage(cleanImage(product.images[0])) ? cleanImage(product.images[0]) : defaultImage}
             sx={{ maxHeight: 400, objectFit: 'cover', borderRadius: '8px 8px 0 0' }}
           />
 
@@ -108,6 +110,7 @@ const ProductDetail = () => {
               <Button size="large" variant="contained" color="primary" onClick={() => handleAddToCart(product)}>
                 Add to cart
               </Button>
+              <UpdateProduct />
             </CardActions>
           </Box>
         </Card>
