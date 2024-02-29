@@ -1,10 +1,11 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
 import axios, { AxiosError } from 'axios'
 
 import { CreateProductType, ProductType, UpdateProductType } from '../../misc/type'
 
 const url = 'https://api.escuelajs.co/api/v1/products'
+const categoryUrl = 'https://api.escuelajs.co/api/v1/categories'
 
 type InitialState = {
   allProducts: ProductType[]
@@ -46,6 +47,31 @@ export const fetchProductsPageAsync = createAsyncThunk(
   async ({ offset, limit }: { offset: number; limit: number }) => {
     try {
       const response = await axios.get<ProductType[]>(`${url}?offset=${offset}&limit=${limit}`)
+      return response.data
+    } catch (e) {
+      const error = e as AxiosError
+      return error
+    }
+  }
+)
+
+export const fetchProductsCategoryAsync = createAsyncThunk('fetchProductsCategoryAsync', async (categoryId: number) => {
+  try {
+    const response = await axios.get<ProductType[]>(`${categoryUrl}/${categoryId}/products`)
+    return response.data
+  } catch (e) {
+    const error = e as AxiosError
+    return error
+  }
+})
+
+export const fetchProductsCategoryPageAsync = createAsyncThunk(
+  'fetchProductsCategoryPageAsync',
+  async ({ categoryId, offset, limit }: { categoryId: number; offset: number; limit: number }) => {
+    try {
+      const response = await axios.get<ProductType[]>(
+        `${categoryUrl}/${categoryId}/products?offset=${offset}&limit=${limit}`
+      )
       return response.data
     } catch (e) {
       const error = e as AxiosError
@@ -165,6 +191,56 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchProductsPageAsync.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.message
+        }
+      }
+    })
+    // fetchProductsCategoryAsync
+    builder.addCase(fetchProductsCategoryAsync.fulfilled, (state, action) => {
+      if (!(action.payload instanceof Error)) {
+        return {
+          ...state,
+          allProducts: action.payload,
+          loading: false
+        }
+      }
+    })
+    builder.addCase(fetchProductsCategoryAsync.pending, state => {
+      return {
+        ...state,
+        loading: true
+      }
+    })
+    builder.addCase(fetchProductsCategoryAsync.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.message
+        }
+      }
+    })
+    //fetchProductsCategoryPageAsync
+    builder.addCase(fetchProductsCategoryPageAsync.fulfilled, (state, action) => {
+      if (!(action.payload instanceof Error)) {
+        return {
+          ...state,
+          products: action.payload,
+          loading: false
+        }
+      }
+    })
+    builder.addCase(fetchProductsCategoryPageAsync.pending, state => {
+      return {
+        ...state,
+        loading: true
+      }
+    })
+    builder.addCase(fetchProductsCategoryPageAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
         return {
           ...state,

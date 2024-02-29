@@ -1,22 +1,28 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import CssBaseline from '@mui/material/CssBaseline'
+import { ThemeProvider } from '@mui/material/styles'
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import App from './App'
-import reportWebVitals from './reportWebVitals'
-import store from './redux/store'
 import './index.css'
+import store from './redux/store'
+import reportWebVitals from './reportWebVitals'
+import theme from './theme'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ToastContainer />
-        <App />
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ToastContainer />
+          <App />
+        </ThemeProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

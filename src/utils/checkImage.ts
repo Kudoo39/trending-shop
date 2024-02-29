@@ -1,13 +1,7 @@
 export const checkImage = (url: string) => {
-  if (
-    url === 'https://placeimg.com/640/480/any' ||
-    url === 'http://placeimg.com/640/480/any' ||
-    url === 'https://placeimg.com/640/480' ||
-    url === 'http://placeimg.com/640/480'
-  ) {
+  if (url.includes('placeimg.com')) {
     return false
   }
-
   try {
     new URL(url)
     return true

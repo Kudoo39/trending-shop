@@ -13,15 +13,19 @@ import CardMedia from '@mui/material/CardMedia'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Pagination from '@mui/material/Pagination'
-import Skeleton from '@mui/material/Skeleton'
-import Stack from '@mui/material/Stack'
+import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import defaultImage from '../assets/images/default_image.jpg'
 import Categories from '../components/Categories'
 import CreateProduct from '../components/CreateProduct'
 import { ProductType, Sort } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
-import { fetchProductsAsync, fetchProductsPageAsync } from '../redux/slices/productSlice'
+import {
+  fetchProductsAsync,
+  fetchProductsCategoryAsync,
+  fetchProductsCategoryPageAsync,
+  fetchProductsPageAsync
+} from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { checkImage } from '../utils/checkImage'
 import { cleanImage } from '../utils/cleanImage'
@@ -35,7 +39,7 @@ const Products = () => {
   const productsPerPage = 8
 
   const allProducts = useSelector((state: AppState) => state.products.allProducts)
-  const products = useSelector((state: AppState) => state.products.products)
+  const products = useSelector((state: AppState) => state.products.products) //page
   const selectedCategory = useSelector((state: AppState) => state.categories.selectedCategory)
   const loading = useSelector((state: AppState) => state.products.loading)
   const error = useSelector((state: AppState) => state.products.error)
@@ -44,7 +48,8 @@ const Products = () => {
 
   const offset = (page - 1) * productsPerPage
   const limit = productsPerPage
-  const numberOfPages = Math.ceil(allProducts.length / productsPerPage)
+  let numberOfPages = Math.ceil(allProducts.length >= 0 ? allProducts.length / productsPerPage : 0)
+  numberOfPages = numberOfPages === 0 ? 1 : numberOfPages
 
   const handleAddToCart = (product: ProductType) => {
     cartDispatch(addToCart(product))
@@ -62,47 +67,33 @@ const Products = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchProductsPageAsync({ offset, limit }))
-  }, [dispatch, offset, limit])
+    if (selectedCategory === 0) {
+      dispatch(fetchProductsAsync())
+    } else {
+      dispatch(fetchProductsCategoryAsync(selectedCategory))
+    }
+  }, [dispatch, selectedCategory])
 
   useEffect(() => {
-    dispatch(fetchProductsAsync())
-  }, [dispatch])
-
-  let filteredProducts =
-    selectedCategory === 0
-      ? products
-      : products.filter(product => {
-        return product.category.id === selectedCategory // prettier-ignore
-      }) // prettier-ignore
+    if (selectedCategory === 0) {
+      dispatch(fetchProductsPageAsync({ offset, limit }))
+    } else {
+      dispatch(fetchProductsCategoryPageAsync({ categoryId: selectedCategory, offset, limit }))
+    }
+  }, [dispatch, selectedCategory, offset, limit])
 
   let sortProducts =
     selectedSort === 'Default'
-      ? filteredProducts
+      ? products
       : selectedSort === 'Highest Price'
-        ? sortByHighest(filteredProducts, 'price') // prettier-ignore
-        : sortByLowest(filteredProducts, 'price') // prettier-ignore
+        ? sortByHighest(products, 'price') // prettier-ignore
+        : sortByLowest(products, 'price') // prettier-ignore
 
   if (loading) {
     return (
-      <Stack
-        spacing={1}
-        sx={{
-          marginTop: '55px',
-          marginLeft: '200px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)'
-        }}
-      >
-        <Skeleton variant="rectangular" width={250} height={420} />
-        <Skeleton variant="rectangular" width={250} height={420} />
-        <Skeleton variant="rectangular" width={250} height={420} />
-        <Skeleton variant="rectangular" width={250} height={420} />
-        <Skeleton variant="rectangular" width={250} height={420} />
-        <Skeleton variant="rectangular" width={250} height={420} />
-        <Skeleton variant="rectangular" width={250} height={420} />
-        <Skeleton variant="rectangular" width={250} height={420} />
-      </Stack>
+      <Box sx={{ marginTop: '10px', marginLeft: '2px' }}>
+        <CircularProgress />
+      </Box>
     )
   }
 
@@ -111,7 +102,7 @@ const Products = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: { xxs: 'column', xs: 'row' } }}>
       <Categories />
       <Box>
         <Box sx={{ display: 'flex' }}>
@@ -168,81 +159,94 @@ const Products = () => {
           <CreateProduct />
         </Box>
 
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 2,
-            margin: '10px',
-            justifyContent: 'center'
-          }}
-        >
-          {sortProducts.map(product => (
-            <Card
-              key={product.id}
-              sx={{
-                'border': '1px solid #ddd',
-                'borderRadius': '8px',
-                'boxShadow': '0 2px 4px rgba(0,0,0,0.1)',
-                'transition': 'transform 0.3s',
-                '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' },
-                'display': 'flex',
-                'flexDirection': 'column',
-                'justifyContent': 'space-between'
-              }}
-            >
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  alt={product.title}
-                  image={checkImage(cleanImage(product.images[0])) ? cleanImage(product.images[0]) : defaultImage}
-                  sx={{ height: 300, objectFit: 'cover' }}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="h2">
-                    {product.title}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
-                    Price:{' '}
-                    <Typography component="span" sx={{ fontWeight: 'normal' }}>
-                      €{product.price}
-                    </Typography>
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-
-              <CardActions
+        {products.length === 0 ? (
+          <Box sx={{ fontSize: '18px', margin: '10px 0 0 10px' }}>There are no items in this category :/</Box>
+        ) : (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
+              gap: 2,
+              margin: '10px',
+              justifyContent: 'center'
+            }}
+          >
+            {sortProducts.map(product => (
+              <Card
+                key={product.id}
                 sx={{
-                  justifyContent: 'space-between',
-                  borderTop: '1px solid #ddd',
-                  padding: '10px'
+                  'border': '1px solid #ddd',
+                  'borderRadius': '8px',
+                  'boxShadow': '0 2px 4px rgba(0,0,0,0.1)',
+                  'transition': 'transform 0.3s',
+                  '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 4px 6px rgba(0,0,0,0.2)' },
+                  'display': 'flex',
+                  'flexDirection': 'column',
+                  'justifyContent': 'space-between'
                 }}
               >
-                <Button
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  component={RouterLink}
-                  to={`/products/${product.id}`}
-                  sx={{ fontWeight: 'bold', padding: 1 }}
-                >
-                  More detail
-                </Button>
-                <Button
-                  size="small"
-                  color="primary"
-                  variant="contained"
-                  onClick={() => handleAddToCart(product)}
-                  sx={{ fontWeight: 'bold', padding: 1 }}
-                >
-                  Add to cart
-                </Button>
-              </CardActions>
-            </Card>
-          ))}
-        </Box>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    alt={product.title}
+                    image={checkImage(cleanImage(product.images[0])) ? cleanImage(product.images[0]) : defaultImage}
+                    sx={{ height: 300, objectFit: 'cover' }}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="h2">
+                      {product.title}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
+                      Price:{' '}
+                      <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                        €{product.price}
+                      </Typography>
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
 
-        <Pagination count={numberOfPages} page={page} color="primary" sx={{ padding: 4 }} onChange={handlePageChange} />
+                <CardActions
+                  sx={{
+                    justifyContent: 'space-between',
+                    borderTop: '1px solid #ddd',
+                    padding: '10px'
+                  }}
+                >
+                  <Button
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    component={RouterLink}
+                    to={`/products/${product.id}`}
+                    sx={{ fontWeight: 'bold', padding: 1 }}
+                  >
+                    More detail
+                  </Button>
+                  <Button
+                    size="small"
+                    color="primary"
+                    variant="contained"
+                    onClick={() => handleAddToCart(product)}
+                    sx={{ fontWeight: 'bold', padding: 1 }}
+                  >
+                    Add to cart
+                  </Button>
+                </CardActions>
+              </Card>
+            ))}
+          </Box>
+        )}
+
+        {numberOfPages === 1 ? null : (
+          <Pagination
+            count={numberOfPages}
+            page={page}
+            defaultPage={1}
+            color="primary"
+            sx={{ padding: 4 }}
+            onChange={handlePageChange}
+          />
+        )}
       </Box>
     </Box>
   )
