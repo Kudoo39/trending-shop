@@ -6,36 +6,45 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
 import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import Pagination from '@mui/material/Pagination'
+import Skeleton from '@mui/material/Skeleton'
+import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import CardActionArea from '@mui/material/CardActionArea'
-import CardContent from '@mui/material/CardContent'
-import CircularProgress from '@mui/material/CircularProgress'
+import defaultImage from '../assets/images/default_image.jpg'
 import Categories from '../components/Categories'
 import CreateProduct from '../components/CreateProduct'
 import { ProductType, Sort } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
-import { fetchProductsAsync } from '../redux/slices/productSlice'
+import { fetchProductsAsync, fetchProductsPageAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
-import { sortByHighest, sortByLowest } from '../utils/sort'
 import { checkImage } from '../utils/checkImage'
 import { cleanImage } from '../utils/cleanImage'
-import defaultImage from '../assets/images/default_image.jpg'
+import { sortByHighest, sortByLowest } from '../utils/sort'
 
 const Products = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [selectedSort, setSelectedSort] = useState<Sort>('Default')
   const open = Boolean(anchorEl)
+  const [page, setPage] = useState(1)
+  const productsPerPage = 8
 
+  const allProducts = useSelector((state: AppState) => state.products.allProducts)
   const products = useSelector((state: AppState) => state.products.products)
   const selectedCategory = useSelector((state: AppState) => state.categories.selectedCategory)
   const loading = useSelector((state: AppState) => state.products.loading)
   const error = useSelector((state: AppState) => state.products.error)
   const dispatch = useAppDispatch()
   const cartDispatch = useDispatch()
+
+  const offset = (page - 1) * productsPerPage
+  const limit = productsPerPage
+  const numberOfPages = Math.ceil(allProducts.length / productsPerPage)
 
   const handleAddToCart = (product: ProductType) => {
     cartDispatch(addToCart(product))
@@ -47,6 +56,14 @@ const Products = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value)
+  }
+
+  useEffect(() => {
+    dispatch(fetchProductsPageAsync({ offset, limit }))
+  }, [dispatch, offset, limit])
 
   useEffect(() => {
     dispatch(fetchProductsAsync())
@@ -68,9 +85,24 @@ const Products = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress size={80} />
-      </Box>
+      <Stack
+        spacing={1}
+        sx={{
+          marginTop: '55px',
+          marginLeft: '200px',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)'
+        }}
+      >
+        <Skeleton variant="rectangular" width={250} height={420} />
+        <Skeleton variant="rectangular" width={250} height={420} />
+        <Skeleton variant="rectangular" width={250} height={420} />
+        <Skeleton variant="rectangular" width={250} height={420} />
+        <Skeleton variant="rectangular" width={250} height={420} />
+        <Skeleton variant="rectangular" width={250} height={420} />
+        <Skeleton variant="rectangular" width={250} height={420} />
+        <Skeleton variant="rectangular" width={250} height={420} />
+      </Stack>
     )
   }
 
@@ -209,6 +241,8 @@ const Products = () => {
             </Card>
           ))}
         </Box>
+
+        <Pagination count={numberOfPages} page={page} color="primary" sx={{ padding: 4 }} onChange={handlePageChange} />
       </Box>
     </Box>
   )

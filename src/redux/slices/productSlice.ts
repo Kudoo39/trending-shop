@@ -7,6 +7,7 @@ import { CreateProductType, ProductType, UpdateProductType } from '../../misc/ty
 const url = 'https://api.escuelajs.co/api/v1/products'
 
 type InitialState = {
+  allProducts: ProductType[]
   products: ProductType[]
   product: ProductType | null
   loading: boolean
@@ -14,6 +15,7 @@ type InitialState = {
 }
 
 const initialState: InitialState = {
+  allProducts: [],
   products: [],
   product: null,
   loading: false
@@ -38,6 +40,19 @@ export const fetchSingleProductAsync = createAsyncThunk('fetchSingleProductAsync
     return error
   }
 })
+
+export const fetchProductsPageAsync = createAsyncThunk(
+  'fetchProductsPageAsync',
+  async ({ offset, limit }: { offset: number; limit: number }) => {
+    try {
+      const response = await axios.get<ProductType[]>(`${url}?offset=${offset}&limit=${limit}`)
+      return response.data
+    } catch (e) {
+      const error = e as AxiosError
+      return error
+    }
+  }
+)
 
 export const createProductsAsync = createAsyncThunk('createProductsAsync', async (newProduct: CreateProductType) => {
   try {
@@ -88,7 +103,7 @@ const productSlice = createSlice({
       if (!(action.payload instanceof Error)) {
         return {
           ...state,
-          products: action.payload,
+          allProducts: action.payload,
           loading: false
         }
       }
@@ -125,6 +140,31 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchSingleProductAsync.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload.message
+        }
+      }
+    })
+    //fetchProductsPageAsync
+    builder.addCase(fetchProductsPageAsync.fulfilled, (state, action) => {
+      if (!(action.payload instanceof Error)) {
+        return {
+          ...state,
+          products: action.payload,
+          loading: false
+        }
+      }
+    })
+    builder.addCase(fetchProductsPageAsync.pending, state => {
+      return {
+        ...state,
+        loading: true
+      }
+    })
+    builder.addCase(fetchProductsPageAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
         return {
           ...state,
