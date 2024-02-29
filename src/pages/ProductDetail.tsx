@@ -1,24 +1,25 @@
-import { useParams, Link as RouterLink } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link as RouterLink, useParams } from 'react-router-dom'
 
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Typography from '@mui/material/Typography'
-import CardMedia from '@mui/material/CardMedia'
-import CardActions from '@mui/material/CardActions'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import CircularProgress from '@mui/material/CircularProgress'
 import ReplyIcon from '@mui/icons-material/Reply'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardMedia from '@mui/material/CardMedia'
+import CircularProgress from '@mui/material/CircularProgress'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import defaultImage from '../assets/images/default_image.jpg'
+import DeleteProduct from '../components/DeleteProduct'
 import UpdateProduct from '../components/UpdateProduct'
-import { fetchSingleProductAsync } from '../redux/slices/productSlice'
-import { AppState, useAppDispatch } from '../redux/store'
 import { ProductType } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
+import { fetchSingleProductAsync } from '../redux/slices/productSlice'
+import { AppState, useAppDispatch } from '../redux/store'
 import { checkImage } from '../utils/checkImage'
 import { cleanImage } from '../utils/cleanImage'
-import defaultImage from '../assets/images/default_image.jpg'
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -99,7 +100,7 @@ const ProductDetail = () => {
               {product.description}
             </Typography>
 
-            <CardActions sx={{ justifyContent: 'space-between', marginTop: 2 }}>
+            <CardActions sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
               <IconButton
                 component={RouterLink}
                 to="/products"
@@ -107,10 +108,18 @@ const ProductDetail = () => {
               >
                 <ReplyIcon sx={{ fontSize: 40 }} />
               </IconButton>
-              <Button size="large" variant="contained" color="primary" onClick={() => handleAddToCart(product)}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleAddToCart(product)}
+                sx={{ marginLeft: 1 }}
+              >
                 Add to cart
               </Button>
-              <UpdateProduct />
+              <Box>
+                <UpdateProduct />
+                <DeleteProduct />
+              </Box>
             </CardActions>
           </Box>
         </Card>
