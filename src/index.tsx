@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider } from '@mui/material/styles'
+import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -18,11 +18,11 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
+        <CssVarsProvider theme={theme}>
           <CssBaseline />
           <ToastContainer />
           <App />
-        </ThemeProvider>
+        </CssVarsProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

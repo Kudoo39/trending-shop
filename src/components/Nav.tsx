@@ -1,20 +1,23 @@
 import React, { useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link as RouterLink } from 'react-router-dom'
 
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import Badge from '@mui/material/Badge'
 import Box from '@mui/material/Box'
-import SvgIcon from '@mui/material/SvgIcon'
-import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Link from '@mui/material/Link'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import Badge from '@mui/material/Badge'
-import { AppState } from '../redux/store'
+import SvgIcon from '@mui/material/SvgIcon'
+import Tooltip from '@mui/material/Tooltip'
+import { useColorScheme } from '@mui/material/styles'
 import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 import { logout } from '../redux/slices/userSlice'
+import { AppState } from '../redux/store'
 
 const Nav = () => {
   const cartItems = useSelector((state: AppState) => state.cart.cart)
@@ -37,6 +40,20 @@ const Nav = () => {
   const handleLogout = () => {
     dispatch(logout())
     setAnchorEl(null)
+  }
+
+  const ModeToggle = () => {
+    const { mode, setMode } = useColorScheme()
+    return (
+      <IconButton
+        onClick={() => {
+          setMode(mode === 'light' ? 'dark' : 'light')
+        }}
+        sx={{ marginRight: { xxs: '0', xsm: '6px', xs: '12px' }, color: 'black' }}
+      >
+        {mode === 'light' ? <LightModeIcon sx={{ fontSize: '30px' }} /> : <DarkModeIcon sx={{ fontSize: '30px' }} />}
+      </IconButton>
+    )
   }
 
   return (
@@ -86,11 +103,12 @@ const Nav = () => {
         </Link>
       </Box>
 
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <ModeToggle />
         <Tooltip title="Carts">
           <Badge badgeContent={totalItems} color="primary">
             <Link component={RouterLink} to="/cart" sx={{ display: 'flex', verticalAlign: 'middle', color: 'inherit' }}>
-              <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer' }} />
+              <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer', color: 'black' }} />
             </Link>
           </Badge>
         </Tooltip>
@@ -101,9 +119,14 @@ const Nav = () => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
-            sx={{ minWidth: 'unset', padding: 0, color: 'inherit', margin: '0 17px' }}
+            sx={{
+              minWidth: 'unset',
+              padding: 0,
+              color: 'inherit',
+              margin: { xxs: '0 4px', xsm: '0 10px', xs: '0 17px' }
+            }}
           >
-            <PersonOutlineIcon sx={{ fontSize: '30px' }} />
+            <PersonOutlineIcon sx={{ fontSize: '30px', color: 'black' }} />
           </IconButton>
         </Tooltip>
         <Menu
