@@ -39,7 +39,7 @@ const Products = () => {
   const productsPerPage = 8
 
   const allProducts = useSelector((state: AppState) => state.products.allProducts)
-  const products = useSelector((state: AppState) => state.products.products) //page
+  const products = useSelector((state: AppState) => state.products.products)
   const selectedCategory = useSelector((state: AppState) => state.categories.selectedCategory)
   const loading = useSelector((state: AppState) => state.products.loading)
   const error = useSelector((state: AppState) => state.products.error)
@@ -71,6 +71,7 @@ const Products = () => {
       dispatch(fetchProductsAsync())
     } else {
       dispatch(fetchProductsCategoryAsync(selectedCategory))
+      setPage(1)
     }
   }, [dispatch, selectedCategory])
 
@@ -91,8 +92,8 @@ const Products = () => {
 
   if (loading) {
     return (
-      <Box sx={{ marginTop: '10px', marginLeft: '2px' }}>
-        <CircularProgress />
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress size={80} />
       </Box>
     )
   }

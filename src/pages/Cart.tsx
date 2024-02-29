@@ -131,7 +131,7 @@ const Cart = () => {
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           marginBottom: '20px',
           height: 'fit-content',
-          marginLeft: '50px'
+          marginLeft: { xxs: '0', sm: '20px' }
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: '10px', color: '#333' }}>

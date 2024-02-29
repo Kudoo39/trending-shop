@@ -72,28 +72,28 @@ const ProductDetail = () => {
           />
 
           <Box sx={{ padding: 2 }}>
-            <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
               Product ID: {product.id}
             </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
               Product:{' '}
               <Typography component="span" sx={{ fontWeight: 'normal' }}>
                 {product.title}
               </Typography>
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
               Price:{' '}
               <Typography component="span" sx={{ fontWeight: 'normal' }}>
                 €{product.price}
               </Typography>
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
               Category:{' '}
               <Typography component="span" sx={{ fontWeight: 'normal' }}>
                 {product.category.name}
               </Typography>
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333', marginTop: 1 }}>
+            <Typography variant="body2" sx={{ fontWeight: 'bold', marginTop: 1 }}>
               Description:
             </Typography>
             <Typography variant="body2" sx={{ fontWeight: 'normal' }}>
