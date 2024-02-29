@@ -6,8 +6,7 @@ import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
-import Skeleton from '@mui/material/Skeleton'
-import Stack from '@mui/material/Stack'
+import CircularProgress from '@mui/material/CircularProgress'
 import ListItemText from '@mui/material/ListItemText'
 import { fetchCategoriesAsync, setSelectedCategory } from '../redux/slices/categorySlice'
 import { AppState, useAppDispatch } from '../redux/store'
@@ -30,16 +29,9 @@ const Categories = () => {
 
   if (loading) {
     return (
-      <Stack spacing={1} sx={{ marginTop: '10px', marginLeft: '2px' }}>
-        <Skeleton variant="rectangular" width={210} height={40} />
-        <Skeleton variant="rectangular" width={210} height={40} />
-        <Skeleton variant="rectangular" width={210} height={40} />
-        <Skeleton variant="rectangular" width={210} height={40} />
-        <Skeleton variant="rectangular" width={210} height={40} />
-        <Skeleton variant="rectangular" width={210} height={40} />
-        <Skeleton variant="rectangular" width={210} height={40} />
-        <Skeleton variant="rectangular" width={210} height={40} />
-      </Stack>
+      <Box sx={{ marginTop: '10px', marginLeft: '2px' }}>
+        <CircularProgress />
+      </Box>
     )
   }
 
@@ -48,7 +40,12 @@ const Categories = () => {
   }
 
   return (
-    <List sx={{ minWidth: '200px', maxWidth: '220px', marginLeft: '10px' }}>
+    <List
+      sx={{
+        width: { xxs: '100%', xs: '200px' },
+        marginLeft: '10px'
+      }}
+    >
       {categories.map(category => (
         <ListItem key={category.id} disablePadding onClick={() => handleCategory(category.id)}>
           <ListItemButton>

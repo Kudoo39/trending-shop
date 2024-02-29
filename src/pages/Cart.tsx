@@ -50,6 +50,7 @@ const Cart = () => {
         borderRadius: '8px',
         padding: '20px',
         display: 'flex',
+        flexDirection: { xxs: 'column', sm: 'row' },
         justifyContent: 'space-between'
       }}
     >
