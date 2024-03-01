@@ -136,12 +136,13 @@ const Nav = () => {
           onClose={handleClose}
           MenuListProps={{ 'aria-labelledby': 'basic-button' }}
         >
-          <Link component={RouterLink} to="/profile" sx={{ textDecoration: 'none', color: 'inherit' }}>
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-          </Link>
-
           {authenticate ? (
-            <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+            <>
+              <Link component={RouterLink} to="/profile" sx={{ textDecoration: 'none', color: 'inherit' }}>
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+              </Link>
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+            </>
           ) : (
             <Link component={RouterLink} to="/login" sx={{ textDecoration: 'none', color: 'inherit' }}>
               <MenuItem onClick={handleClose}>Log In / Register</MenuItem>

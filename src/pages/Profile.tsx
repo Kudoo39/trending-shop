@@ -1,18 +1,31 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
-import { AppState } from '../redux/store'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
 import { Button } from '@mui/material'
-import { logout } from '../redux/slices/userSlice'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { authenticateUserAsync, logout } from '../redux/slices/userSlice'
+import { AppState, useAppDispatch } from '../redux/store'
 
 const Profile = () => {
   const user = useSelector((state: AppState) => state.users.user)
-  const dispatch = useDispatch()
+  const userDispatch = useDispatch()
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const handleLogout = () => {
-    dispatch(logout())
+    userDispatch(logout())
   }
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token')
+    if (accessToken && !user) {
+      dispatch(authenticateUserAsync(accessToken))
+    } else if (!accessToken) {
+      navigate('/login')
+    }
+  }, [dispatch, navigate, user])
 
   return (
     <Box
