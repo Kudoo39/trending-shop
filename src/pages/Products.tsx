@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography'
 import defaultImage from '../assets/images/default_image.jpg'
 import Categories from '../components/Categories'
 import CreateProduct from '../components/CreateProduct'
+import ScrollUpButton from '../components/ScrollUpButton'
 import { ProductType, Sort } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
 import {
@@ -38,6 +39,7 @@ const Products = () => {
   const [page, setPage] = useState(1)
   const productsPerPage = 8
 
+  const user = useSelector((state: AppState) => state.users.user)
   const allProducts = useSelector((state: AppState) => state.products.allProducts)
   const products = useSelector((state: AppState) => state.products.products)
   const selectedCategory = useSelector((state: AppState) => state.categories.selectedCategory)
@@ -81,7 +83,7 @@ const Products = () => {
     } else {
       dispatch(fetchProductsCategoryPageAsync({ categoryId: selectedCategory, offset, limit }))
     }
-  }, [dispatch, selectedCategory, offset, limit])
+  }, [dispatch, selectedCategory, offset, limit, allProducts.length])
 
   let sortProducts =
     selectedSort === 'Default'
@@ -157,7 +159,7 @@ const Products = () => {
               </MenuItem>
             </Menu>
           </Box>
-          <CreateProduct />
+          {user && user.role === 'admin' && <CreateProduct />}
         </Box>
 
         {products.length === 0 ? (
@@ -249,6 +251,7 @@ const Products = () => {
           />
         )}
       </Box>
+      <ScrollUpButton />
     </Box>
   )
 }

@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography'
 import defaultImage from '../assets/images/default_image.jpg'
 import DeleteProduct from '../components/DeleteProduct'
 import UpdateProduct from '../components/UpdateProduct'
+import ScrollUpButton from '../components/ScrollUpButton'
 import { ProductType } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
 import { fetchSingleProductAsync } from '../redux/slices/productSlice'
@@ -30,6 +31,7 @@ const ProductDetail = () => {
     dispatch(fetchSingleProductAsync(Number(id)))
   }, [dispatch, id])
 
+  const user = useSelector((state: AppState) => state.users.user)
   const product = useSelector((state: AppState) => state.products.product)
   const loading = useSelector((state: AppState) => state.products.loading)
   const error = useSelector((state: AppState) => state.products.error)
@@ -116,12 +118,16 @@ const ProductDetail = () => {
               >
                 Add to cart
               </Button>
-              <Box>
-                <UpdateProduct />
-                <DeleteProduct />
-              </Box>
+
+              {user && user.role === 'admin' && (
+                <Box>
+                  <UpdateProduct />
+                  <DeleteProduct />
+                </Box>
+              )}
             </CardActions>
           </Box>
+          <ScrollUpButton />
         </Card>
       ) : (
         <Box>Product not found</Box>

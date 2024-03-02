@@ -8,6 +8,8 @@ const userUrl = 'https://api.escuelajs.co/api/v1/users'
 const loginUrl = 'https://api.escuelajs.co/api/v1/auth/login'
 const profileUrl = 'https://api.escuelajs.co/api/v1/auth/profile'
 
+const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+
 type InitialState = {
   user?: User | null
   users: User[]
@@ -19,7 +21,7 @@ type InitialState = {
 const initialState: InitialState = {
   users: [],
   loading: false,
-  isAuthenticated: false
+  isAuthenticated: isAuthenticated
 }
 
 export const registerUserAsync = createAsyncThunk('registerUserAsync', async (userData: UserRegister) => {
@@ -54,6 +56,7 @@ export const loginUserAsync = createAsyncThunk(
     try {
       const response = await axios.post<{ access_token: string }>(loginUrl, userCredential)
       toast.success('Login successfully!', { position: 'bottom-left' })
+      localStorage.setItem('isAuthenticated', 'true')
       localStorage.setItem('access_token', response.data.access_token)
 
       const authentication = await dispatch(authenticateUserAsync(response.data.access_token))
@@ -73,6 +76,8 @@ const userSlice = createSlice({
     logout(state) {
       state.user = null
       state.isAuthenticated = false
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('isAuthenticated')
       toast.success('Logout successfully!', { position: 'bottom-left' })
     }
   },
@@ -83,6 +88,22 @@ const userSlice = createSlice({
         user: action.payload,
         isAuthenticated: true,
         loading: false
+      }
+    })
+    builder.addCase(authenticateUserAsync.pending, state => {
+      return {
+        ...state,
+        loading: true
+      }
+    })
+    builder.addCase(authenticateUserAsync.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          loading: false,
+          isAuthenticated: false,
+          error: action.payload.message
+        }
       }
     })
     builder.addCase(loginUserAsync.fulfilled, (state, action) => {

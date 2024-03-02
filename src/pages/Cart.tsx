@@ -10,10 +10,9 @@ import CardMedia from '@mui/material/CardMedia'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import defaultImage from '../assets/images/default_image.jpg'
 import { clearCart, removeFromCart, updateQuantity } from '../redux/slices/cartSlice'
 import { AppState } from '../redux/store'
-
-import defaultImage from '../assets/images/default_image.jpg'
 import { checkImage } from '../utils/checkImage'
 import { cleanImage } from '../utils/cleanImage'
 
@@ -75,19 +74,19 @@ const Cart = () => {
               />
             </Box>
             <Box sx={{ flex: '2', display: 'flex', flexDirection: 'column', marginRight: 2 }}>
-              <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                 Product:{' '}
                 <Typography component="span" sx={{ fontWeight: 'normal' }}>
                   {cart.title}
                 </Typography>
               </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                 Price:{' '}
                 <Typography component="span" sx={{ fontWeight: 'normal' }}>
                   €{cart.price}
                 </Typography>
               </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                 ID:{' '}
                 <Typography component="span" sx={{ fontWeight: 'normal' }}>
                   {cart.id}
@@ -102,8 +101,7 @@ const Cart = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 marginRight: 2,
-                fontWeight: 'bold',
-                color: '#333'
+                fontWeight: 'bold'
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>

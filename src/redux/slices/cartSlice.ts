@@ -3,12 +3,14 @@ import { toast } from 'react-toastify'
 
 import { CartType, ProductType, UpdateQuantity } from '../../misc/type'
 
+const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+
 type InitialState = {
   cart: CartType[]
 }
 
 const initialState: InitialState = {
-  cart: []
+  cart: cart
 }
 
 const cartSlice = createSlice({
@@ -25,11 +27,13 @@ const cartSlice = createSlice({
         state.cart.push(tempProduct)
         toast.success(`Added "${action.payload.title}" to the cart`, { position: 'bottom-left' })
       }
+      localStorage.setItem('cart', JSON.stringify(state.cart))
     },
 
     removeFromCart: (state, action: PayloadAction<number>) => {
       state.cart = state.cart.filter(item => item.id !== action.payload)
       toast.error('Removed item from the cart', { position: 'bottom-left' })
+      localStorage.setItem('cart', JSON.stringify(state.cart))
     },
 
     updateQuantity(state, action: PayloadAction<UpdateQuantity>) {
@@ -37,11 +41,13 @@ const cartSlice = createSlice({
       const updateItem = state.cart.find(item => item.id === id)
       if (updateItem) {
         updateItem.quantity += quantity
+        localStorage.setItem('cart', JSON.stringify(state.cart))
       }
     },
 
     clearCart(state) {
       state.cart = []
+      localStorage.setItem('cart', JSON.stringify(state.cart))
     }
   }
 })

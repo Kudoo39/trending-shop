@@ -16,7 +16,7 @@ import { AppState } from './redux/store'
 import './App.css'
 
 const App = () => {
-  const authenticate = useSelector((state: AppState) => state.users.isAuthenticated)
+  const isAuthenticated = useSelector((state: AppState) => state.users.isAuthenticated)
 
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -28,8 +28,8 @@ const App = () => {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/user" element={<User />}></Route>
-          <Route path="/profile" element={authenticate ? <Profile /> : <Navigate to="/login" />}></Route>
-          <Route path="/login" element={authenticate ? <Navigate to="/profile" /> : <Login />}></Route>
+          <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}></Route>
+          <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/profile" />}></Route>
           <Route path="/register" element={<Register />}></Route>
         </Routes>
       </Box>
