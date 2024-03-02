@@ -1,49 +1,56 @@
 import { useFormik } from 'formik'
 import { useState } from 'react'
+import * as Yup from 'yup'
 import { useSelector } from 'react-redux'
 
-import AddTaskIcon from '@mui/icons-material/AddTask'
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
 import Modal from '@mui/material/Modal'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import CircularProgress from '@mui/material/CircularProgress'
-import { fetchSingleProductAsync, updateProductAsync } from '../redux/slices/productSlice'
-import { AppState, useAppDispatch } from '../redux/store'
-import { UpdateProductType } from '../misc/type'
-import { useParams } from 'react-router-dom'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import FormHelperText from '@mui/material/FormHelperText'
+import { createProductsAsync, fetchProductsAsync } from '../../redux/slices/productSlice'
+import { AppState, useAppDispatch } from '../../redux/store'
+import { CreateProductType } from '../../misc/type'
 
-const UpdateProduct = () => {
-  const loading = useSelector((state: AppState) => state.products.loading)
-  const error = useSelector((state: AppState) => state.products.error)
+const CreateProduct = () => {
+  const categories = useSelector((state: AppState) => state.categories.categories)
+  const categoryId = categories.length > 0 ? categories[1].id : 1
   const dispatch = useAppDispatch()
   const [openModal, setOpenModal] = useState(false)
-  const product = useSelector((state: AppState) => state.products.product)
-  const { id } = useParams()
 
   const formik = useFormik({
     initialValues: {
-      title: product?.title,
-      price: product?.price,
-      description: product?.description
+      title: '',
+      price: null,
+      description: '',
+      categoryId: categoryId,
+      images: ['']
     },
-    onSubmit: async (data: UpdateProductType, { resetForm }) => {
-      const modifiedData = {
-        updateProduct: data,
-        productId: Number(id)
-      }
+    validationSchema: Yup.object({
+      title: Yup.string().required('Required'),
+      price: Yup.number().required('Required'),
+      description: Yup.string().required('Required'),
+      categoryId: Yup.string().required('Required'),
+      images: Yup.string().required('Required')
+    }),
+    onSubmit: async (data: CreateProductType, { resetForm }) => {
+      const imagesArray = typeof data.images === 'string' ? [data.images] : data.images
+      const modifiedData = { ...data, images: imagesArray }
+
       try {
-        await dispatch(updateProductAsync(modifiedData))
-        await dispatch(fetchSingleProductAsync(Number(id)))
+        await dispatch(createProductsAsync(modifiedData))
+        await dispatch(fetchProductsAsync())
       } catch (error) {
         return error
       }
       resetForm()
     }
   })
-
   const handleOpenModal = () => {
     setOpenModal(true)
   }
@@ -53,28 +60,10 @@ const UpdateProduct = () => {
     formik.resetForm()
   }
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress />
-      </Box>
-    )
-  }
-
-  if (error) {
-    return <Box>Error: {error}</Box>
-  }
-
   return (
     <Box sx={{ margin: '10px 0 0 10px' }}>
-      <Button
-        color="secondary"
-        variant="outlined"
-        startIcon={<AddTaskIcon />}
-        sx={{ padding: 1 }}
-        onClick={handleOpenModal}
-      >
-        Update
+      <Button variant="outlined" startIcon={<AddToPhotosIcon />} sx={{ padding: 1 }} onClick={handleOpenModal}>
+        Create New Product
       </Button>
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box
@@ -97,18 +86,6 @@ const UpdateProduct = () => {
             onSubmit={formik.handleSubmit}
             sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
           >
-            <TextField
-              id="id"
-              name="id"
-              label="Product ID"
-              type="text"
-              value={id}
-              disabled
-              variant="outlined"
-              margin="normal"
-              sx={{ marginBottom: 1, width: '300px' }}
-            />
-
             <TextField
               id="title"
               name="title"
@@ -154,8 +131,42 @@ const UpdateProduct = () => {
               sx={{ marginBottom: 1, width: '300px' }}
             />
 
-            <Button color="success" type="submit" variant="contained" sx={{ marginTop: 2 }}>
-              OK
+            <Select
+              id="category"
+              name="categoryId"
+              value={formik.values.categoryId}
+              onChange={formik.handleChange}
+              variant="outlined"
+              error={formik.touched.categoryId && Boolean(formik.errors.categoryId)}
+              sx={{ marginTop: 2, width: '300px' }}
+            >
+              {categories.slice(1).map(category => (
+                <MenuItem key={category.id} value={category.id}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {formik.touched.categoryId && formik.errors.categoryId && (
+              <FormHelperText error>{formik.errors.categoryId}</FormHelperText>
+            )}
+
+            <TextField
+              id="images"
+              name="images"
+              label="The Product URL"
+              type="text"
+              value={[formik.values.images]}
+              onChange={formik.handleChange}
+              placeholder="Enter your photo url"
+              variant="outlined"
+              margin="normal"
+              error={formik.touched.images && Boolean(formik.errors.images)}
+              helperText={formik.touched.images && formik.errors.images}
+              sx={{ marginTop: 3, width: '300px' }}
+            />
+
+            <Button type="submit" variant="contained" sx={{ width: '300px', marginTop: 2 }}>
+              Create
             </Button>
           </FormControl>
         </Box>
@@ -164,4 +175,4 @@ const UpdateProduct = () => {
   )
 }
 
-export default UpdateProduct
+export default CreateProduct

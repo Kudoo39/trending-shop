@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 import FormControl from '@mui/material/FormControl'
+import DemoUserAccount from '../components/auth/DemoUserAccount'
+import DemoAdminAccount from '../components/auth/DemoAdminAccount'
 import { loginUserAsync } from '../redux/slices/userSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { UserCredential } from '../misc/type'
@@ -70,6 +72,12 @@ const Login = () => {
         </Button>
         {error && <Typography sx={{ color: 'red', marginTop: 1 }}>{error}</Typography>}
       </FormControl>
+
+      <Box sx={{ marginTop: 2 }}>
+        <DemoUserAccount />
+        <DemoAdminAccount />
+      </Box>
+
       <Link component={RouterLink} to="/register" sx={{ marginTop: 2 }}>
         Create a new account!
       </Link>

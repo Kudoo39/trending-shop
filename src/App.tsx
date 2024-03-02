@@ -6,7 +6,6 @@ import Home from './pages/Home'
 import Product from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
-import User from './components/User'
 import Footer from './components/Footer'
 import Box from '@mui/material/Box'
 import Login from './pages/Login'
@@ -27,7 +26,6 @@ const App = () => {
           <Route path="/products" element={<Product />}></Route>
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />}></Route>
-          <Route path="/user" element={<User />}></Route>
           <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}></Route>
           <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/profile" />}></Route>
           <Route path="/register" element={<Register />}></Route>

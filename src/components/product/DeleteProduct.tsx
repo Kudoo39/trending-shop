@@ -10,8 +10,8 @@ import FormControl from '@mui/material/FormControl'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
 import { useNavigate, useParams } from 'react-router-dom'
-import { deleteProductAsync, fetchProductsAsync } from '../redux/slices/productSlice'
-import { AppState, useAppDispatch } from '../redux/store'
+import { deleteProductAsync, fetchProductsAsync } from '../../redux/slices/productSlice'
+import { AppState, useAppDispatch } from '../../redux/store'
 
 const DeleteProduct = () => {
   const navigate = useNavigate()
