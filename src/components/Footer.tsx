@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
@@ -29,4 +31,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default memo(Footer)

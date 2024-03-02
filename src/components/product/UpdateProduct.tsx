@@ -1,5 +1,6 @@
 import { useFormik } from 'formik'
-import { useState } from 'react'
+import { useState, memo } from 'react'
+import * as Yup from 'yup'
 import { useSelector } from 'react-redux'
 
 import AddTaskIcon from '@mui/icons-material/AddTask'
@@ -29,6 +30,11 @@ const UpdateProduct = () => {
       price: product?.price,
       description: product?.description
     },
+    validationSchema: Yup.object({
+      title: Yup.string().required('Required'),
+      price: Yup.number().positive('Price must be a positive number').required('Required'),
+      description: Yup.string().required('Required')
+    }),
     onSubmit: async (data: UpdateProductType, { resetForm }) => {
       const modifiedData = {
         updateProduct: data,
@@ -164,4 +170,4 @@ const UpdateProduct = () => {
   )
 }
 
-export default UpdateProduct
+export default memo(UpdateProduct)

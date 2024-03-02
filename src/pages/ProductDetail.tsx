@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link as RouterLink, useParams } from 'react-router-dom'
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom'
+import { debounce } from 'lodash'
 
 import ReplyIcon from '@mui/icons-material/Reply'
 import Box from '@mui/material/Box'
@@ -21,9 +22,16 @@ import { fetchSingleProductAsync } from '../redux/slices/productSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { checkImage } from '../utils/checkImage'
 import { cleanImage } from '../utils/cleanImage'
+import { authenticateUserAsync } from '../redux/slices/userSlice'
 
 const ProductDetail = () => {
+  const user = useSelector((state: AppState) => state.users.user)
+  const product = useSelector((state: AppState) => state.products.product)
+  const loading = useSelector((state: AppState) => state.products.loading)
+  const error = useSelector((state: AppState) => state.products.error)
+
   const { id } = useParams()
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const cartDispatch = useDispatch()
 
@@ -31,14 +39,16 @@ const ProductDetail = () => {
     dispatch(fetchSingleProductAsync(Number(id)))
   }, [dispatch, id])
 
-  const user = useSelector((state: AppState) => state.users.user)
-  const product = useSelector((state: AppState) => state.products.product)
-  const loading = useSelector((state: AppState) => state.products.loading)
-  const error = useSelector((state: AppState) => state.products.error)
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token')
+    if (accessToken && !user) {
+      dispatch(authenticateUserAsync(accessToken))
+    }
+  }, [dispatch, navigate, user])
 
-  const handleAddToCart = (product: ProductType) => {
+  const handleAddToCart = debounce((product: ProductType) => {
     cartDispatch(addToCart(product))
-  }
+  }, 300)
 
   if (loading) {
     return (
@@ -110,22 +120,16 @@ const ProductDetail = () => {
               >
                 <ReplyIcon sx={{ fontSize: 40 }} />
               </IconButton>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleAddToCart(product)}
-                sx={{ marginLeft: 1 }}
-              >
+              <Button variant="contained" color="primary" onClick={() => handleAddToCart(product)}>
                 Add to cart
               </Button>
-
-              {user && user.role === 'admin' && (
-                <Box>
-                  <UpdateProduct />
-                  <DeleteProduct />
-                </Box>
-              )}
             </CardActions>
+            {user && user.role === 'admin' && (
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <UpdateProduct />
+                <DeleteProduct />
+              </Box>
+            )}
           </Box>
           <ScrollUpButton />
         </Card>

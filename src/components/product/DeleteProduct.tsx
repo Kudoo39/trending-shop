@@ -1,5 +1,5 @@
 import { useFormik } from 'formik'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { useSelector } from 'react-redux'
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
@@ -40,7 +40,6 @@ const DeleteProduct = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false)
-    formik.resetForm()
   }
 
   if (loading) {
@@ -97,4 +96,4 @@ const DeleteProduct = () => {
   )
 }
 
-export default DeleteProduct
+export default memo(DeleteProduct)

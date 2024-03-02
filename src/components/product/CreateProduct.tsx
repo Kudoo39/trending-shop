@@ -1,5 +1,5 @@
 import { useFormik } from 'formik'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import * as Yup from 'yup'
 import { useSelector } from 'react-redux'
 
@@ -33,7 +33,7 @@ const CreateProduct = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Required'),
-      price: Yup.number().required('Required'),
+      price: Yup.number().positive('Price must be a positive number').required('Required'),
       description: Yup.string().required('Required'),
       categoryId: Yup.string().required('Required'),
       images: Yup.string().required('Required')
@@ -175,4 +175,4 @@ const CreateProduct = () => {
   )
 }
 
-export default CreateProduct
+export default memo(CreateProduct)

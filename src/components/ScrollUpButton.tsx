@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 import Button from '@mui/material/Button'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
@@ -31,4 +33,4 @@ const ScrollUpButton = () => {
   )
 }
 
-export default ScrollUpButton
+export default memo(ScrollUpButton)
