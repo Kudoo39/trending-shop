@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { authenticateUserAsync, logout } from '../redux/slices/userSlice'
@@ -10,6 +11,8 @@ import { AppState, useAppDispatch } from '../redux/store'
 
 const Profile = () => {
   const user = useSelector((state: AppState) => state.users.user)
+  const loading = useSelector((state: AppState) => state.users.loading)
+  const error = useSelector((state: AppState) => state.users.error)
   const userDispatch = useDispatch()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -26,6 +29,18 @@ const Profile = () => {
       navigate('/login')
     }
   }, [dispatch, navigate, user])
+
+  if (loading) {
+    return (
+      <Box>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  if (error) {
+    return <Box>Error: {error}</Box>
+  }
 
   return (
     <Box

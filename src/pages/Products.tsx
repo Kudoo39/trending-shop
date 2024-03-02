@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
+import { debounce } from 'lodash'
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import Box from '@mui/material/Box'
@@ -31,6 +32,7 @@ import { AppState, useAppDispatch } from '../redux/store'
 import { checkImage } from '../utils/checkImage'
 import { cleanImage } from '../utils/cleanImage'
 import { sortByHighest, sortByLowest } from '../utils/sort'
+import { authenticateUserAsync } from '../redux/slices/userSlice'
 
 const Products = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -53,9 +55,9 @@ const Products = () => {
   let numberOfPages = Math.ceil(allProducts.length >= 0 ? allProducts.length / productsPerPage : 0)
   numberOfPages = numberOfPages === 0 ? 1 : numberOfPages
 
-  const handleAddToCart = (product: ProductType) => {
+  const handleAddToCart = debounce((product: ProductType) => {
     cartDispatch(addToCart(product))
-  }
+  }, 300)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -84,6 +86,13 @@ const Products = () => {
       dispatch(fetchProductsCategoryPageAsync({ categoryId: selectedCategory, offset, limit }))
     }
   }, [dispatch, selectedCategory, offset, limit, allProducts.length])
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token')
+    if (accessToken && !user) {
+      dispatch(authenticateUserAsync(accessToken))
+    }
+  }, [dispatch, user])
 
   let sortProducts =
     selectedSort === 'Default'

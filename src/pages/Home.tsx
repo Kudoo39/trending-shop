@@ -49,7 +49,7 @@ const Home = () => {
           >
             Trending Shop
           </Typography>
-          <Typography variant="body1" sx={{ fontWeight: 400, margin: '0px 20px 30px 20px' }}>
+          <Typography variant="body1" sx={{ fontWeight: 400, margin: '0px 20px 30px 20px', textAlign: 'center' }}>
             Welcome to Trending Shop, where every product tells a story. From handpicked items to the latest trends!
           </Typography>
           <Button

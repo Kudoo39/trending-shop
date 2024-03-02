@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import CheckIcon from '@mui/icons-material/Check'
@@ -19,9 +19,12 @@ const Categories = () => {
   const dispatch = useAppDispatch()
   const categoryDispatch = useDispatch()
 
-  const handleCategory = (category: number) => {
-    categoryDispatch(setSelectedCategory(category))
-  }
+  const handleCategory = useCallback(
+    (category: number) => {
+      categoryDispatch(setSelectedCategory(category))
+    },
+    [categoryDispatch]
+  )
 
   useEffect(() => {
     dispatch(fetchCategoriesAsync())
@@ -58,4 +61,4 @@ const Categories = () => {
   )
 }
 
-export default Categories
+export default memo(Categories)

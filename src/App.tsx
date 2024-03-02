@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { memo } from 'react'
 
 import Nav from './components/Nav'
 import Home from './pages/Home'
@@ -36,4 +37,4 @@ const App = () => {
   )
 }
 
-export default App
+export default memo(App)

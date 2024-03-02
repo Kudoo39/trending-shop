@@ -1,4 +1,5 @@
 import { useFormik } from 'formik'
+import { memo } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -51,4 +52,4 @@ const DemoUserAccount = () => {
   )
 }
 
-export default DemoUserAccount
+export default memo(DemoUserAccount)
