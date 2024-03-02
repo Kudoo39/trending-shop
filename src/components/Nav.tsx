@@ -137,12 +137,12 @@ const Nav = () => {
           MenuListProps={{ 'aria-labelledby': 'basic-button' }}
         >
           {authenticate ? (
-            <>
+            <Box>
               <Link component={RouterLink} to="/profile" sx={{ textDecoration: 'none', color: 'inherit' }}>
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
               </Link>
               <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-            </>
+            </Box>
           ) : (
             <Link component={RouterLink} to="/login" sx={{ textDecoration: 'none', color: 'inherit' }}>
               <MenuItem onClick={handleClose}>Log In / Register</MenuItem>
