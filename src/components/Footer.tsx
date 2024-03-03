@@ -15,18 +15,29 @@ const Footer = () => {
         width: '100%'
       }}
     >
-      <Typography variant="body2" sx={{ marginRight: 1, fontWeight: 'bold', marginBottom: '20px' }}>
+      <Typography variant="body2" sx={{ fontWeight: 'bold', marginBottom: '20px' }}>
         Data provided by{' '}
         <Link
-          href="https://fakestoreapi.com/"
+          href="https://fakeapi.platzi.com/"
+          target="_blank"
+          rel="noreferrer"
+          color="secondary"
+          sx={{ 'textDecoration': 'none', 'listStyle': 'none', '&:hover': { color: '#255c99' } }}
+        >
+          Platzi Fake Store API
+        </Link>
+      </Typography>
+      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+        © 2024 -{' '}
+        <Link
+          href="https://github.com/Kudoo39"
           target="_blank"
           rel="noreferrer"
           sx={{ 'textDecoration': 'none', 'listStyle': 'none', '&:hover': { color: '#255c99' } }}
         >
-          Fake Store API
+          Khang Nguyen
         </Link>
       </Typography>
-      <Typography variant="body2">© 2024 - Khang Nguyen</Typography>
     </Box>
   )
 }

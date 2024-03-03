@@ -13,7 +13,6 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import { AppState } from './redux/store'
-import './App.css'
 
 const App = () => {
   const isAuthenticated = useSelector((state: AppState) => state.users.isAuthenticated)

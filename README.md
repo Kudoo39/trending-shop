@@ -1,50 +1,52 @@
-# Frontend project
+# E-Commerce Website
 
-This repository for the Frontend project to build an e-commerce website.
+The E-Commerce Website is a web application built with React that provides users with an online shopping experience. It fetches product data from [Platzi Fake Store API](https://fakeapi.platzi.com/) and offers features such as browsing products, adding items to the cart, and managing products.
 
-## Requirements
+## Features
 
-### Basic requirements
+- **Browse Products:** Explore a diverse selection of products sourced from [Platzi Fake Store API](https://fakeapi.platzi.com/).
+- **Product Details:** Access comprehensive information about each product, including name, price, description, and image.
+- **Shopping Cart Management:** Add products to the shopping cart and easily manage cart items.
+- **User Authentication:** Securely login and register accounts to access personalized features.
+- **Demo Account:** Quickly explore the website's features without registering by logging in with a demo account.
+- **Light-Dark Mode:** Customize users' browsing experience with the option to switch between light and dark themes.
+- **Toast Notifications:** Receive instant feedback on actions or the status of operations through toast notifications.
+- **Responsive Design:** Enjoy a seamless shopping experience across various devices with a responsive website design.
 
-The Front end project must use TypeScript and Redux toolkit.
+## Demo
 
-1. Use the API endpoint `https://fakeapi.platzi.com/`.
+- Check out the [Live Demo](https://trending-shop.netlify.app/) to experience the E-Commerce Website in action.
 
-2. Create at lease 4 pages (can be more if you want): Page for all products, product page, profile page (only available if user logins), and cart page (cart page could be a page or a modal)
+## Technologies Used
 
-3. Create Redux store for following features:
+- TypeScript
+- Redux Toolkit
+- React
+- CSS
+- Material UI
 
-   - product reducer: get all products, find a single products, filter products by categories, sort products by price. Create, update and delete a product (enable update & delete features only for admin of the webapp)
-   - user reducer: register and login
-   - cart reducer: add product to cart, remove products, update products's quantity in cart
+## Installation and Usage
 
-4. When adding routers to your application, set certain routes to be private. For example, route to user profile page should not be accessible if user has not logged in.
+1. Clone the repository: `git clone https://github.com/Kudoo39/trending-shop`
+2. Navigate to the project directory: `cd trending-shop`
+3. Install dependencies: `yarn install`
+4. Run the app locally: `yarn start`
 
-5. Styling: must have responsive
+## Screenshots
 
-6. Implement unit testing for the reducers
+Here are some screenshots of the E-Commerce Website:
 
-7. **Deploy** the application and rewrite README file.
+Homepage:
+![Homepage](src/assets/images/homepage_demo.png)
 
-### Additional features:
+Products Page:
+![Products](src/assets/images/products_demo.png)
 
-- Use Context API to switch theme
-- Use pagination when fetching/displaying all the products
-- Implement performance optimization where applicable
+Cart Page:
+![Cart](src/assets/images/cart_demo.png)
 
-## Grading (1-5)
+Login Page:
+![Login](src/assets/images/login_demo.png)
 
-1: Late submission or not complete basic requirements
-
-2: Basic requirement + Presentation
-
-3: Folder structure + follow convention(naming convention ,loading, error) + some additional features
-
-4: All additional features + reusable logic + custom hook
-
-5: UI-UX (for example: send alert when user add same product) + styling (animation or transition, scroll to top) + advanced feature (google log in)
-
-## Deadline
-
-- Presentation: **7/3** and **8/3/ 2024**
-- Submitting Front-end project **10am 8/3/2024**
+Responsive Design:
+![Responsive](src/assets/images/responsive_demo.png)

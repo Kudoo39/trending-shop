@@ -14,6 +14,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import SvgIcon from '@mui/material/SvgIcon'
 import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 import { useColorScheme } from '@mui/material/styles'
 import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 import { logout } from '../redux/slices/userSlice'
@@ -49,7 +50,7 @@ const Nav = () => {
         onClick={() => {
           setMode(mode === 'light' ? 'dark' : 'light')
         }}
-        sx={{ marginRight: { xxs: '0', xsm: '6px', xs: '12px' }, color: 'black' }}
+        sx={{ marginRight: { xxs: '0', xsm: '6px', xs: '12px' }, color: 'text.primary' }}
       >
         {mode === 'light' ? <LightModeIcon sx={{ fontSize: '30px' }} /> : <DarkModeIcon sx={{ fontSize: '30px' }} />}
       </IconButton>
@@ -63,8 +64,8 @@ const Nav = () => {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '10px',
-        backgroundColor: '#f0f0f0',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0px 0.5px 2px',
+        boxShadowColor: 'text.primary',
         borderRadius: '4px'
       }}
     >
@@ -76,14 +77,28 @@ const Nav = () => {
           flexWrap: 'wrap'
         }}
       >
-        <SvgIcon component={ShopIcon} inheritViewBox sx={{ cursor: 'pointer', fontSize: '32px', margin: '0 10px' }} />
+        <SvgIcon
+          component={ShopIcon}
+          inheritViewBox
+          sx={{
+            'cursor': 'pointer',
+            'fontSize': '32px',
+            'margin': '0 10px',
+            '&:hover': {
+              transform: 'scale(1.1)'
+            },
+            '&:active': {
+              transform: 'scale(1.2)'
+            }
+          }}
+        />
         <Link component={RouterLink} to="/" sx={{ textDecoration: 'none' }}>
           <Box
             sx={{
               'cursor': 'pointer',
               'fontWeight': '600',
-              'color': 'black',
-              '&:hover': { color: 'navy', fontWeight: 650 }
+              'color': 'text.primary',
+              '&:hover': { color: 'text.secondary', fontWeight: 650 }
             }}
           >
             Home
@@ -94,8 +109,8 @@ const Nav = () => {
             sx={{
               'cursor': 'pointer',
               'fontWeight': '600',
-              'color': 'black',
-              '&:hover': { color: 'navy', fontWeight: 650 }
+              'color': 'text.primary',
+              '&:hover': { color: 'text.secondary', fontWeight: 650 }
             }}
           >
             Products
@@ -108,7 +123,7 @@ const Nav = () => {
         <Tooltip title="Carts">
           <Badge badgeContent={totalItems} color="primary">
             <Link component={RouterLink} to="/cart" sx={{ display: 'flex', verticalAlign: 'middle', color: 'inherit' }}>
-              <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer', color: 'black' }} />
+              <ShoppingCartIcon sx={{ fontSize: '30px', cursor: 'pointer' }} />
             </Link>
           </Badge>
         </Tooltip>
@@ -126,7 +141,7 @@ const Nav = () => {
               margin: { xxs: '0 4px', xsm: '0 10px', xs: '0 17px' }
             }}
           >
-            <PersonOutlineIcon sx={{ fontSize: '30px', color: 'black' }} />
+            <PersonOutlineIcon sx={{ fontSize: '30px' }} />
           </IconButton>
         </Tooltip>
         <Menu

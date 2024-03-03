@@ -22,7 +22,8 @@ const Home = () => {
         sx={{
           height: '100%',
           width: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundColor: 'text.disabled',
+          color: 'background.default',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center'
@@ -30,7 +31,6 @@ const Home = () => {
       >
         <Box
           sx={{
-            color: 'white',
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column'
@@ -59,8 +59,8 @@ const Home = () => {
             sx={{
               'fontWeight': 600,
               'padding': '12px 30px',
-              'borderColor': '#fff',
-              'color': '#fff',
+              'borderColor': 'background.default',
+              'color': 'background.default',
               '&:hover': { color: '#2196f3' }
             }}
           >
