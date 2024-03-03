@@ -129,9 +129,10 @@ const Products = () => {
               sx={{
                 minWidth: 'unset',
                 padding: 1,
-                color: 'inherit',
+                color: 'text.primary',
                 fontWeight: '500',
-                border: '1px solid black'
+                border: '1px solid',
+                borderColor: 'text.primary'
               }}
             >
               Sort by: {selectedSort}
@@ -208,7 +209,7 @@ const Products = () => {
                     <Typography gutterBottom variant="h6" component="h2">
                       {product.title}
                     </Typography>
-                    <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold', color: '#333' }}>
+                    <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 'bold' }}>
                       Price:{' '}
                       <Typography component="span" sx={{ fontWeight: 'normal' }}>
                         €{product.price}

@@ -1,17 +1,27 @@
-import { useCallback, useEffect, memo } from 'react'
+import { memo, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import CheckIcon from '@mui/icons-material/Check'
 import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
-import CircularProgress from '@mui/material/CircularProgress'
 import ListItemText from '@mui/material/ListItemText'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material/styles'
 import { fetchCategoriesAsync, setSelectedCategory } from '../redux/slices/categorySlice'
 import { AppState, useAppDispatch } from '../redux/store'
 
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+
 const Categories = () => {
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('xs'))
+
   const categories = useSelector((state: AppState) => state.categories.categories)
   const selectedCategory = useSelector((state: AppState) => state.categories.selectedCategory)
   const loading = useSelector((state: AppState) => state.categories.loading)
@@ -40,6 +50,27 @@ const Categories = () => {
 
   if (error) {
     return <Box>Error: {error}</Box>
+  }
+
+  if (matches) {
+    return (
+      <FormControl fullWidth sx={{ marginTop: 2 }}>
+        <InputLabel id="demo-simple-select-label">Caterogy</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={selectedCategory}
+          label="Category"
+          onChange={(event: SelectChangeEvent<number>) => handleCategory(event.target.value as number)}
+        >
+          {categories.map(category => (
+            <MenuItem key={category.id} value={category.id}>
+              {category.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    )
   }
 
   return (

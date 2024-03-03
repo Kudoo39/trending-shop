@@ -11,6 +11,22 @@ const theme = extendTheme({
       lg: 1200,
       xl: 1536
     } as any
+  },
+  typography: {
+    fontFamily: [
+      'Karla',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      'Segoe UI',
+      'Roboto',
+      'Oxygen',
+      'Ubuntu',
+      'Cantarell',
+      'Fira Sans',
+      'Droid Sans',
+      'Helvetica Neue',
+      'sans-serif'
+    ].join(',')
   }
 })
 
