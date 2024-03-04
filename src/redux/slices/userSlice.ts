@@ -14,13 +14,14 @@ type InitialState = {
   user?: User | null
   users: User[]
   loading: boolean
-  error?: string | null
+  error: string | null
   isAuthenticated: boolean
 }
 
 const initialState: InitialState = {
   users: [],
   loading: false,
+  error: null,
   isAuthenticated: isAuthenticated
 }
 

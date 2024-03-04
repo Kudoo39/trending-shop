@@ -12,14 +12,15 @@ type InitialState = {
   products: ProductType[]
   product: ProductType | null
   loading: boolean
-  error?: string
+  error: string | null
 }
 
 const initialState: InitialState = {
   allProducts: [],
   products: [],
   product: null,
-  loading: false
+  loading: false,
+  error: null
 }
 
 export const fetchProductsAsync = createAsyncThunk('fetchProductsAsync', async () => {

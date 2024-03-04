@@ -74,21 +74,31 @@ const Categories = () => {
   }
 
   return (
-    <List
+    <Box
       sx={{
-        width: { xxs: '100%', xs: '200px' },
-        marginLeft: '10px'
+        'maxHeight': { xs: '3850px', sm: '2060px', md: '1480px', lg: '1040px' },
+        'width': '220px',
+        'overflowY': 'auto',
+        'overflowX': 'hidden',
+        '&::-webkit-scrollbar-track': { m: 2 }
       }}
     >
-      {categories.map(category => (
-        <ListItem key={category.id} disablePadding onClick={() => handleCategory(category.id)}>
-          <ListItemButton>
-            <ListItemText primary={category.name} />
-            {selectedCategory === category.id ? <CheckIcon /> : null}
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
+      <List
+        sx={{
+          width: { xxs: '100%', xs: '200px' },
+          marginLeft: '10px'
+        }}
+      >
+        {categories.map(category => (
+          <ListItem key={category.id} disablePadding onClick={() => handleCategory(category.id)}>
+            <ListItemButton>
+              <ListItemText primary={category.name} />
+              {selectedCategory === category.id ? <CheckIcon /> : null}
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   )
 }
 

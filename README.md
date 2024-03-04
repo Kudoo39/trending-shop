@@ -1,10 +1,10 @@
-# E-Commerce Website
+# Trending Shop
 
 The E-Commerce Website is a web application built with React that provides users with an online shopping experience. It fetches product data from [Platzi Fake Store API](https://fakeapi.platzi.com/) and offers features such as browsing products, adding items to the cart, and managing products.
 
 ## Features
 
-- **Browse Products:** Explore a diverse selection of products sourced from [Platzi Fake Store API](https://fakeapi.platzi.com/).
+- **Browse Products:** Explore a diverse selection of products sourced from Platzi Fake Store API.
 - **Product Details:** Access comprehensive information about each product, including name, price, description, and image.
 - **Shopping Cart Management:** Add products to the shopping cart and easily manage cart items.
 - **User Authentication:** Securely login and register accounts to access personalized features.
@@ -36,17 +36,17 @@ The E-Commerce Website is a web application built with React that provides users
 
 Here are some screenshots of the E-Commerce Website:
 
-Homepage:
+**Homepage:**
 ![Homepage](src/assets/images/homepage_demo.png)
 
-Products Page:
+**Products Page:**
 ![Products](src/assets/images/products_demo.png)
 
-Cart Page:
+**Cart Page:**
 ![Cart](src/assets/images/cart_demo.png)
 
-Login Page:
+**Login Page:**
 ![Login](src/assets/images/login_demo.png)
 
-Responsive Design:
+**Responsive Design:**
 ![Responsive](src/assets/images/responsive_demo.png)
