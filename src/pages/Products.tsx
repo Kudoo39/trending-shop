@@ -173,7 +173,7 @@ const Products = () => {
         </Box>
 
         {products.length === 0 ? (
-          <Box sx={{ fontSize: '18px', margin: '10px 0 0 10px' }}>There are no items in this category :/</Box>
+          <Box sx={{ fontSize: '18px', margin: '10px 0 0 10px' }}>There is no item in this category :/</Box>
         ) : (
           <Box
             sx={{

@@ -8,13 +8,14 @@ type InitialState = {
   categories: Category[]
   selectedCategory: number
   loading: boolean
-  error?: string
+  error: string | null
 }
 
 const initialState: InitialState = {
   categories: [],
   selectedCategory: 0,
-  loading: false
+  loading: false,
+  error: null
 }
 
 export const fetchCategoriesAsync = createAsyncThunk('fetchCategoriesAsync', async () => {
