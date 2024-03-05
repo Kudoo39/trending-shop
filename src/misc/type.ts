@@ -1,5 +1,11 @@
 export type Sort = 'Default' | 'Highest Price' | 'Lowest Price'
 
+export type SortProps = {
+  selectedSort: Sort
+  // eslint-disable-next-line no-unused-vars
+  setSelectedSort: (sort: Sort) => void
+}
+
 export type Category = {
   id: number
   name: string

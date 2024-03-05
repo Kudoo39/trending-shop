@@ -42,21 +42,21 @@ const categorySlice = createSlice({
       if (!(action.payload instanceof Error)) {
         state.categories = [{ id: 0, name: 'All', image: 'https://i.imgur.com/cLBhSOG.png' }, ...action.payload]
       }
-      state.loading = false
+      state.loading = false,
+      state.error = null
     })
     builder.addCase(fetchCategoriesAsync.pending, state => {
       return {
         ...state,
-        loading: true
+        loading: true,
+        error: null
       }
     })
     builder.addCase(fetchCategoriesAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
   }

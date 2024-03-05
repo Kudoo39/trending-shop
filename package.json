@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@codemirror)/\"",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@codemirror)/\" --coverage",
     "test-coverage": "jest --coverage",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0"
