@@ -1,26 +1,23 @@
+import { debounce } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
-import { debounce } from 'lodash'
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
-import CardActionArea from '@mui/material/CardActionArea'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import Pagination from '@mui/material/Pagination'
 import CircularProgress from '@mui/material/CircularProgress'
+import Pagination from '@mui/material/Pagination'
 import Typography from '@mui/material/Typography'
 import defaultImage from '../assets/images/default_image.jpg'
 import Categories from '../components/Categories'
-import CreateProduct from '../components/product/CreateProduct'
 import ScrollUpButton from '../components/ScrollUpButton'
-import { ProductType, Sort } from '../misc/type'
+import SortPrice from '../components/SortPrice'
+import CreateProduct from '../components/product/CreateProduct'
+import { Sort, ProductType } from '../misc/type'
 import { addToCart } from '../redux/slices/cartSlice'
 import {
   fetchProductsAsync,
@@ -28,16 +25,14 @@ import {
   fetchProductsCategoryPageAsync,
   fetchProductsPageAsync
 } from '../redux/slices/productSlice'
+import { authenticateUserAsync } from '../redux/slices/userSlice'
 import { AppState, useAppDispatch } from '../redux/store'
 import { checkImage } from '../utils/checkImage'
 import { cleanImage } from '../utils/cleanImage'
 import { sortByHighest, sortByLowest } from '../utils/sort'
-import { authenticateUserAsync } from '../redux/slices/userSlice'
 
 const Products = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [selectedSort, setSelectedSort] = useState<Sort>('Default')
-  const open = Boolean(anchorEl)
   const [page, setPage] = useState(1)
   const productsPerPage = 8
 
@@ -58,13 +53,6 @@ const Products = () => {
   const handleAddToCart = debounce((product: ProductType) => {
     cartDispatch(addToCart(product))
   }, 300)
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
@@ -118,58 +106,10 @@ const Products = () => {
       <Categories />
       <Box>
         <Box sx={{ display: 'flex' }}>
-          <Box sx={{ margin: '10px 0 0 10px' }}>
-            <Button
-              id="basic-button"
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
-              endIcon={<KeyboardArrowDownIcon />}
-              sx={{
-                minWidth: 'unset',
-                padding: 1,
-                color: 'text.primary',
-                fontWeight: '500',
-                border: '1px solid',
-                borderColor: 'text.primary'
-              }}
-            >
-              Sort by: {selectedSort}
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button'
-              }}
-            >
-              <MenuItem
-                onClick={() => {
-                  setSelectedSort('Default')
-                }}
-              >
-                Default
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setSelectedSort('Highest Price')
-                }}
-              >
-                Highest Price
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setSelectedSort('Lowest Price')
-                }}
-              >
-                Lowest Price
-              </MenuItem>
-            </Menu>
+          <Box sx={{ display: 'flex' }}>
+            <SortPrice selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
+            {user && user.role === 'admin' && <CreateProduct />}
           </Box>
-          {user && user.role === 'admin' && <CreateProduct />}
         </Box>
 
         {products.length === 0 ? (
@@ -198,7 +138,7 @@ const Products = () => {
                   'justifyContent': 'space-between'
                 }}
               >
-                <CardActionArea>
+                <Card>
                   <CardMedia
                     component="img"
                     alt={product.title}
@@ -216,7 +156,7 @@ const Products = () => {
                       </Typography>
                     </Typography>
                   </CardContent>
-                </CardActionArea>
+                </Card>
 
                 <CardActions
                   sx={{

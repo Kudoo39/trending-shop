@@ -14,7 +14,6 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import SvgIcon from '@mui/material/SvgIcon'
 import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
 import { useColorScheme } from '@mui/material/styles'
 import { ReactComponent as ShopIcon } from '../assets/icons/shop.svg'
 import { logout } from '../redux/slices/userSlice'
@@ -77,21 +76,23 @@ const Nav = () => {
           flexWrap: 'wrap'
         }}
       >
-        <SvgIcon
-          component={ShopIcon}
-          inheritViewBox
-          sx={{
-            'cursor': 'pointer',
-            'fontSize': '32px',
-            'margin': '0 10px',
-            '&:hover': {
-              transform: 'scale(1.1)'
-            },
-            '&:active': {
-              transform: 'scale(1.2)'
-            }
-          }}
-        />
+        <Link component={RouterLink} to="/" sx={{ textDecoration: 'none', color: 'inherit' }}>
+          <SvgIcon
+            component={ShopIcon}
+            inheritViewBox
+            sx={{
+              'cursor': 'pointer',
+              'fontSize': '32px',
+              'margin': '0 10px',
+              '&:hover': {
+                transform: 'scale(1.1)'
+              },
+              '&:active': {
+                transform: 'scale(1.2)'
+              }
+            }}
+          />
+        </Link>
         <Link component={RouterLink} to="/" sx={{ textDecoration: 'none' }}>
           <Box
             sx={{
