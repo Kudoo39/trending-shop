@@ -131,7 +131,8 @@ const productSlice = createSlice({
         return {
           ...state,
           allProducts: action.payload,
-          loading: false
+          loading: false,
+          error: null
         }
       }
     })
@@ -142,12 +143,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchProductsAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
     // fetchSingleProductAsync
@@ -156,7 +155,8 @@ const productSlice = createSlice({
         return {
           ...state,
           product: action.payload,
-          loading: false
+          loading: false,
+          error: null
         }
       }
     })
@@ -167,12 +167,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchSingleProductAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
     //fetchProductsPageAsync
@@ -181,7 +179,8 @@ const productSlice = createSlice({
         return {
           ...state,
           products: action.payload,
-          loading: false
+          loading: false,
+          error: null
         }
       }
     })
@@ -192,12 +191,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchProductsPageAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
     // fetchProductsCategoryAsync
@@ -206,7 +203,8 @@ const productSlice = createSlice({
         return {
           ...state,
           allProducts: action.payload,
-          loading: false
+          loading: false,
+          error: null
         }
       }
     })
@@ -217,12 +215,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchProductsCategoryAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
     //fetchProductsCategoryPageAsync
@@ -231,7 +227,8 @@ const productSlice = createSlice({
         return {
           ...state,
           products: action.payload,
-          loading: false
+          loading: false,
+          error: null
         }
       }
     })
@@ -242,12 +239,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(fetchProductsCategoryPageAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
     // createProductsAsync
@@ -255,7 +250,8 @@ const productSlice = createSlice({
       return {
         ...state,
         products: [...state.products, action.payload],
-        loading: false
+        loading: false,
+        error: null
       }
     })
     builder.addCase(createProductsAsync.pending, state => {
@@ -265,12 +261,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(createProductsAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
     // updateProductAsync
@@ -280,7 +274,8 @@ const productSlice = createSlice({
         return {
           ...state,
           products: state.products.map((product, index) => (index === findingProduct ? action.payload : product)),
-          loading: false
+          loading: false,
+          error: null
         }
       }
       return state
@@ -292,12 +287,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(updateProductAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
     // deleteProductAsync
@@ -305,7 +298,8 @@ const productSlice = createSlice({
       return {
         ...state,
         products: state.products.filter(product => product.id !== action.payload.id),
-        loading: false
+        loading: false,
+        error: null
       }
     })
     builder.addCase(deleteProductAsync.pending, state => {
@@ -315,12 +309,10 @@ const productSlice = createSlice({
       }
     })
     builder.addCase(deleteProductAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
   }

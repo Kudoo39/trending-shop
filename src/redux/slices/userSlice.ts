@@ -91,42 +91,11 @@ const userSlice = createSlice({
         loading: false
       }
     })
-    builder.addCase(authenticateUserAsync.pending, state => {
-      return {
-        ...state,
-        loading: true
-      }
-    })
-    builder.addCase(authenticateUserAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          isAuthenticated: false,
-          error: action.payload.message
-        }
-      }
-    })
     builder.addCase(loginUserAsync.fulfilled, (state, action) => {
       return {
         ...state,
         user: action.payload as User,
         loading: false
-      }
-    })
-    builder.addCase(loginUserAsync.pending, state => {
-      return {
-        ...state,
-        loading: true
-      }
-    })
-    builder.addCase(loginUserAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
       }
     })
     builder.addCase(registerUserAsync.fulfilled, (state, action) => {
@@ -143,12 +112,10 @@ const userSlice = createSlice({
       }
     })
     builder.addCase(registerUserAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message
-        }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? 'error'
       }
     })
   }

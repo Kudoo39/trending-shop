@@ -8,7 +8,10 @@ const initialState = {
   error: null
 }
 
-const mockCategories = [{ id: 1, name: 'Mock Category 1', image: 'Image 1' }, { id: 2, name: 'Mock Category 2', image: 'Image 2' }]
+const mockCategories = [
+  { id: 1, name: 'Mock Category 1', image: 'Image 1' },
+  { id: 2, name: 'Mock Category 2', image: 'Image 2' }
+]
 
 describe('categorySlice reducers', () => {
   test('should handle setSelectedCategory', () => {
@@ -33,9 +36,9 @@ describe('categorySlice reducers', () => {
 
   // test 0: initial state
   test('should return initial state', () => {
-    const state = categoryReducer(undefined, { type: '' })
+    const nextState = categoryReducer(undefined, { type: '' })
 
-    expect(state).toEqual(initialState)
+    expect(nextState).toEqual(initialState)
   })
 
   // test 1: fulfill
@@ -53,7 +56,7 @@ describe('categorySlice reducers', () => {
 
   // test 2: pending
   test('should have loading truthy when fetch is pending', () => {
-    const action = fetchCategoriesAsync.pending('fulfilled')
+    const action = fetchCategoriesAsync.pending('pending')
     const nextState = categoryReducer(initialState, action)
 
     expect(nextState).toEqual({
