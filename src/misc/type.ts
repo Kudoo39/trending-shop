@@ -12,7 +12,7 @@ export type Category = {
   image: string
 }
 
-export interface CreateProductType {
+export type CreateProductType = {
   title: string
   price: number | null
   description: string
@@ -20,7 +20,7 @@ export interface CreateProductType {
   images: string[]
 }
 
-export interface UpdateProductType {
+export type UpdateProductType = {
   title?: string
   price?: number
   description?: string
@@ -45,7 +45,7 @@ export type UpdateQuantity = {
   quantity: number
 }
 
-export interface UserCredential {
+export type UserCredential = {
   email: string
   password: string
 }
