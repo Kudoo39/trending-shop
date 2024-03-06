@@ -51,7 +51,81 @@ To get started with the Trending Shop project, follow these steps:
 ## Project Structure
 
 ```
-Updated soon!
+📦
+├─ .eslintrc.js
+├─ .gitignore
+├─ .vscode
+│  └─ settings.json
+├─ README.md
+├─ package.json
+├─ public
+│  ├─ index.html
+│  ├─ robots.txt
+│  └─ shop.svg
+├─ src
+│  ├─ App.tsx
+│  ├─ assets
+│  │  ├─ icons
+│  │  │  └─ shop.svg
+│  │  └─ images
+│  │     ├─ background.jpg
+│  │     ├─ cart_demo.png
+│  │     ├─ default_image.jpg
+│  │     ├─ homepage_demo.png
+│  │     ├─ login_demo.png
+│  │     ├─ products_demo.png
+│  │     └─ responsive_demo.png
+│  ├─ components
+│  │  ├─ Categories.tsx
+│  │  ├─ Footer.tsx
+│  │  ├─ Nav.tsx
+│  │  ├─ ScrollUpButton.tsx
+│  │  ├─ SortPrice.tsx
+│  │  ├─ auth
+│  │  │  ├─ DemoAdminAccount.tsx
+│  │  │  └─ DemoUserAccount.tsx
+│  │  └─ product
+│  │     ├─ CreateProduct.tsx
+│  │     ├─ DeleteProduct.tsx
+│  │     └─ UpdateProduct.tsx
+│  ├─ index.css
+│  ├─ index.tsx
+│  ├─ misc
+│  │  └─ type.ts
+│  ├─ pages
+│  │  ├─ Cart.tsx
+│  │  ├─ Home.tsx
+│  │  ├─ Login.tsx
+│  │  ├─ ProductDetail.tsx
+│  │  ├─ Products.tsx
+│  │  ├─ Profile.tsx
+│  │  └─ Register.tsx
+│  ├─ react-app-env.d.ts
+│  ├─ redux
+│  │  ├─ slices
+│  │  │  ├─ cartSlice.ts
+│  │  │  ├─ categorySlice.ts
+│  │  │  ├─ productSlice.ts
+│  │  │  └─ userSlice.ts
+│  │  └─ store.ts
+│  ├─ reportWebVitals.ts
+│  ├─ setupTests.ts
+│  ├─ test
+│  │  ├─ cart
+│  │  │  └─ cartSlice.test.ts
+│  │  ├─ category
+│  │  │  └─ categorySlice.test.ts
+│  │  ├─ product
+│  │  │  └─ productSlice.test.ts
+│  │  └─ user
+│  │     └─ userSlice.test.ts
+│  ├─ theme.ts
+│  └─ utils
+│     ├─ checkImage.ts
+│     ├─ cleanImage.ts
+│     └─ sort.ts
+├─ tsconfig.json
+└─ yarn.lock
 ```
 
 ## Testing
