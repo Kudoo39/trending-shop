@@ -41,10 +41,10 @@ const DemoAdminAccount = () => {
           fullWidth
           variant="outlined"
           color="secondary"
-          sx={{ marginTop: 1, width: '360px' }}
+          sx={{ marginTop: 1, width: '300px' }}
           disabled={loading}
         >
-          {loading ? 'Loading...' : 'Log In With A Demo Account As An Admin'}
+          {loading ? 'Loading...' : 'Explore Admin Features'}
         </Button>
         {error && <Typography sx={{ color: 'red', marginTop: 1 }}>{error}</Typography>}
       </FormControl>

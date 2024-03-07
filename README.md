@@ -130,9 +130,15 @@ To get started with the Trending Shop project, follow these steps:
 
 ## Testing
 
-To run tests for the Trending Shop project, follow this step:
+### For npm users
 
-- Run the test suite: `yarn test`
+1. Ensure all dependencies are installed: `npm install`
+2. Run the test suite: `npm run test`
+
+### For yarn users
+
+1. Ensure all dependencies are installed: `yarn install`
+2. Run the test suite: `yarn test`
 
 ## Deployment
 
