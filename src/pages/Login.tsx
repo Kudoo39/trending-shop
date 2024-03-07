@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -25,7 +26,14 @@ const Login = () => {
       email: '',
       password: ''
     },
-
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .required('Required')
+        .matches(/^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/, 'Please enter a valid email address'),
+      password: Yup.string()
+        .required('Required')
+        .matches(/^.{6,}$/, 'Password must be at least 6 characters')
+    }),
     onSubmit: (userCredential: UserCredential) => {
       dispatch(loginUserAsync(userCredential))
       navigate('/profile')
@@ -51,6 +59,8 @@ const Login = () => {
           name="email"
           value={formik.values.email}
           onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
           sx={{ marginBottom: 2, width: '300px' }}
         />
 
@@ -64,6 +74,8 @@ const Login = () => {
           id="password"
           value={formik.values.password}
           onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
           sx={{ marginBottom: 2, width: '300px' }}
         />
 
