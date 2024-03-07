@@ -51,7 +51,7 @@ To get started with the Trending Shop project, follow these steps:
 ## Project Structure
 
 ```
-📦
+📦 
 ├─ .eslintrc.js
 ├─ .gitignore
 ├─ .vscode
@@ -80,6 +80,7 @@ To get started with the Trending Shop project, follow these steps:
 │  │  ├─ Footer.tsx
 │  │  ├─ Nav.tsx
 │  │  ├─ ScrollUpButton.tsx
+│  │  ├─ Search.tsx
 │  │  ├─ SortPrice.tsx
 │  │  ├─ auth
 │  │  │  ├─ DemoAdminAccount.tsx
