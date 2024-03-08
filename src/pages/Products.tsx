@@ -139,7 +139,7 @@ const Products = () => {
                   'justifyContent': 'space-between'
                 }}
               >
-                <Card>
+                <Card sx={{ maxWidth: { xxs: '100%', sm: '360px' } }}>
                   <CardMedia
                     component="img"
                     alt={product.title}
