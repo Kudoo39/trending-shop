@@ -55,7 +55,7 @@ const Categories = () => {
   if (matches) {
     return (
       <FormControl fullWidth sx={{ marginTop: 2 }}>
-        <InputLabel id="demo-simple-select-label">Caterogy</InputLabel>
+        <InputLabel id="demo-simple-select-label">Category</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
