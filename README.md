@@ -33,6 +33,7 @@ To get started with the Trending Shop project, follow these steps:
 ## Features
 
 - **Browse Products:** Explore a diverse selection of products sourced from Platzi Fake Store API.
+- **Search Functionality:** Find products quickly by searching with keywords or specific terms, improving navigation and user experience.
 - **Product Details:** Access comprehensive information about each product, including name, price, description, and image.
 - **Shopping Cart Management:** Add products to the shopping cart and easily manage cart items.
 - **User Authentication:** Securely login and register accounts to access personalized features.
@@ -51,7 +52,7 @@ To get started with the Trending Shop project, follow these steps:
 ## Project Structure
 
 ```
-📦 
+📦
 ├─ .eslintrc.js
 ├─ .gitignore
 ├─ .vscode
