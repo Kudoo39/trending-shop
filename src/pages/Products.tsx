@@ -13,6 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Pagination from '@mui/material/Pagination'
 import Typography from '@mui/material/Typography'
 import defaultImage from '../assets/images/default_image.jpg'
+import img from '../assets/images/no-product.png'
 import Categories from '../components/Categories'
 import ScrollUpButton from '../components/ScrollUpButton'
 import SortPrice from '../components/SortPrice'
@@ -108,7 +109,12 @@ const Products = () => {
         </Box>
 
         {productsOnCurrentPage.length === 0 ? (
-          <Box sx={{ fontSize: '18px', margin: '10px 0 0 10px' }}>There is no item in this category :/</Box>
+          <CardMedia
+            component="img"
+            alt={'There is no item in this category :/'}
+            image={img}
+            sx={{ width: '100%', maxWidth: 600 }}
+          />
         ) : (
           <Box
             sx={{

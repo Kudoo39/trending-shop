@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import defaultImage from '../assets/images/default_image.jpg'
+import img from '../assets/images/no-product-cart.png'
 import { clearCart, removeFromCart, updateQuantity } from '../redux/slices/cartSlice'
 import { AppState } from '../redux/store'
 import { checkImage } from '../utils/checkImage'
@@ -53,73 +54,82 @@ const Cart = () => {
         justifyContent: 'space-between'
       }}
     >
-      <Box>
-        {cartItems.map(cart => (
-          <Box
-            key={cart.id}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: 1,
-              borderBottom: '1px solid #ccc',
-              paddingBottom: '10px'
-            }}
-          >
-            <Box sx={{ marginRight: '10px' }}>
-              <CardMedia
-                component="img"
-                alt="Product Images"
-                image={checkImage(cleanImage(cart.images[0])) ? cleanImage(cart.images[0]) : defaultImage}
-                sx={{ width: '75px', height: '75px', borderRadius: '8px' }}
-              />
-            </Box>
-            <Box sx={{ flex: '2', display: 'flex', flexDirection: 'column', marginRight: 2 }}>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Product:{' '}
-                <Typography component="span" sx={{ fontWeight: 'normal' }}>
-                  {cart.title}
-                </Typography>
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                Price:{' '}
-                <Typography component="span" sx={{ fontWeight: 'normal' }}>
-                  €{cart.price}
-                </Typography>
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                ID:{' '}
-                <Typography component="span" sx={{ fontWeight: 'normal' }}>
-                  {cart.id}
-                </Typography>
-              </Typography>
-            </Box>
-            <Typography
-              variant="body2"
+      {cartItems.length === 0 ? (
+        <CardMedia
+          component="img"
+          alt={'There is no item in the cart :/'}
+          image={img}
+          sx={{ width: { xxs: '100%', sm: '50%' } }}
+        />
+      ) : (
+        <Box>
+          {cartItems.map(cart => (
+            <Box
+              key={cart.id}
               sx={{
-                flex: '1',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                marginRight: 2,
-                fontWeight: 'bold'
+                marginBottom: 1,
+                borderBottom: '1px solid #ccc',
+                paddingBottom: '10px'
               }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>
-                <IconButton onClick={() => handleDecrease(cart.id)} disabled={cart.quantity === 1}>
-                  <RemoveIcon />
-                </IconButton>
-                {cart.quantity}
-                <IconButton onClick={() => handleIncrease(cart.id)}>
-                  <AddIcon />
-                </IconButton>
+              <Box sx={{ marginRight: '10px' }}>
+                <CardMedia
+                  component="img"
+                  alt="Product Images"
+                  image={checkImage(cleanImage(cart.images[0])) ? cleanImage(cart.images[0]) : defaultImage}
+                  sx={{ width: '75px', height: '75px', borderRadius: '8px' }}
+                />
               </Box>
-            </Typography>
-            <IconButton onClick={() => handleRemove(cart.id)} sx={{ marginLeft: 'auto' }}>
-              <DeleteOutlineIcon sx={{ '&:hover': { color: 'red' } }} />
-            </IconButton>
-          </Box>
-        ))}
-      </Box>
+              <Box sx={{ flex: '2', display: 'flex', flexDirection: 'column', marginRight: 2 }}>
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                  Product:{' '}
+                  <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                    {cart.title}
+                  </Typography>
+                </Typography>
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                  Price:{' '}
+                  <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                    €{cart.price}
+                  </Typography>
+                </Typography>
+                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                  ID:{' '}
+                  <Typography component="span" sx={{ fontWeight: 'normal' }}>
+                    {cart.id}
+                  </Typography>
+                </Typography>
+              </Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  flex: '1',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginRight: 2,
+                  fontWeight: 'bold'
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '16px' }}>
+                  <IconButton onClick={() => handleDecrease(cart.id)} disabled={cart.quantity === 1}>
+                    <RemoveIcon />
+                  </IconButton>
+                  {cart.quantity}
+                  <IconButton onClick={() => handleIncrease(cart.id)}>
+                    <AddIcon />
+                  </IconButton>
+                </Box>
+              </Typography>
+              <IconButton onClick={() => handleRemove(cart.id)} sx={{ marginLeft: 'auto' }}>
+                <DeleteOutlineIcon sx={{ '&:hover': { color: 'red' } }} />
+              </IconButton>
+            </Box>
+          ))}
+        </Box>
+      )}
 
       <Box
         sx={{
@@ -129,7 +139,8 @@ const Cart = () => {
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           marginBottom: '20px',
           height: 'fit-content',
-          marginLeft: { xxs: '0', sm: '20px' }
+          marginLeft: { xxs: '0', sm: '20px' },
+          marginTop: { xxs: '20px', sm: '0' }
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: '10px', color: '#333' }}>
