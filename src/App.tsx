@@ -8,6 +8,7 @@ import Product from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
 import Footer from './components/Footer'
+import Chatbot from './components/Chatbot'
 import Box from '@mui/material/Box'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
@@ -32,6 +33,7 @@ const App = () => {
         </Routes>
       </Box>
       <Footer />
+      <Chatbot />
     </Box>
   )
 }
