@@ -20,7 +20,7 @@ To get started with the Trending Shop project, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/Kudoo39/trending-shop`
 2. Navigate to the project directory: `cd trending-shop`
-3. Install dependencies: `npm install`
+3. Install dependencies: `npm install --legacy-peer-deps`
 4. Run the app locally: `npm run start`
 
 ### For yarn users
@@ -134,7 +134,7 @@ To get started with the Trending Shop project, follow these steps:
 
 ### For npm users
 
-1. Ensure all dependencies are installed: `npm install`
+1. Ensure all dependencies are installed: `npm install --legacy-peer-deps`
 2. Run the test suite: `npm run test`
 
 ### For yarn users
