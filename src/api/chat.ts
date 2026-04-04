@@ -109,6 +109,7 @@ export const sendMessageToGemini = async (
 
     return 'I\'m sorry, I couldn\'t process that. Could you try rephrasing your question?'
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Gemini API Error:', error)
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 429) {
